@@ -1,0 +1,42 @@
+html, body {
+  overflow: hidden;
+  background: -webkit-linear-gradient(rgb(52, 152, 219), rgb(231, 76, 60));
+}
+#reg{
+    position: absolute;
+    top: calc(50% - 150px);
+    width: 500px;
+    height: 300px;
+    left: calc(50% - 250px);
+}
+#reg input{
+	width: 500px;
+	border-radius: 10px;
+	height: 25px;
+	font-size: 17px;
+	font-family: Arial;
+	border-width: 1px;
+	margin: 10px;
+}
+#reg input:focus{
+	border-width: 2px;
+	border-color: black;
+}
+#reg_btn{
+	background-color: rgb(46, 204, 113);
+}
+#reg_btn:hover{
+	margin: 11px;
+}
+#back{
+	text-decoration: none;
+	font-size: 20px;
+	font: Arial;
+	color: black;
+}
+#back:hover{
+	text-decoration: underline;
+}
+input{
+	outline:none;
+}

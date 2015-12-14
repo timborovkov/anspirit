@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<script type="text/javascript">
+
+	/*
+		Just empty all save files and start application from scratch to use it without errors
+	*/
+
+		var fs = require('fs');
+		$ = require('jquery');
+		var LocalStorage = require('node-localstorage').LocalStorage;
+		localStorage = new LocalStorage('./scratch');
+
+		var http = require('http');
+		var fs = require('fs');
+
+		if(localStorage.getItem('id') == null) {
+			window.location.href = "./login.html";
+		}else{
+			login();
+		}
+		//login
+		function login(){
+		  $.ajax({
+		    type: "post",
+		    url: 'http://80.223.209.170/tim/login.php',
+		    data: {'email': localStorage.getItem('email'), 'password': localStorage.getItem('pass')},
+		    success: function(data){
+		      processLoginResult(data);
+		    },
+		    error: function(a, error){
+		    	alert("You are not connected to the internet");
+		    },
+		    dataType: "json"
+		  });
+		}
+		function processLoginResult(data){
+		  if (!data.login) {
+		    window.location.href = "./login.html";
+		  }else{
+		    localStorage.setItem('id', data.id);
+		    localStorage.setItem('name', data.name);
+		    localStorage.setItem('version', data.version);
+		    localStorage.setItem('lang', data.lang);
+		    localStorage.setItem('age', data.age);
+		    localStorage.setItem('tokenCode', data.tokenCode);
+		    localStorage.setItem('email', data.email);
+
+				downloadExtensions();
+
+		    $(location).attr('href','file://' + __dirname + '/userPanel.html');
+		  }
+		}
+		function downloadExtensions(){
+			var don = false;
+			var err = false;
+			$.ajax({
+				type: 'get',
+				url: 'http://80.223.209.170/tim/userExtensions.php',
+				data: {'user': localStorage.getItem('id')},
+				dataType: 'json',
+				success: function(extensions){
+					alert('check');
+					var file = './rules.json';
+					var exts = JSON.stringify(extensions);
+
+					var fs = require('fs');
+					fs.writeFile(file, exts, function(){don = true});
+
+					for(var i = 0; i < extensions.length; i++) {
+						var file = fs.createWriteStream("rules/" + extensions[i]['name'] + ".js");
+						var request = http.get(extensions[i]['pathToExt'], function(response) {
+							response.pipe(file);
+						});
+					}
+				},
+				error: function(a, error){
+					console.log(error);
+					err = true;
+				}
+			});
+			while (!don && !err){console.log('wait');}
+		}
+	</script>
+</head>
+<body>
+	<img src="719.GIF" style="position: absolute; left: calc(50% - 100px); top: 300px">
+</body>
+</html>

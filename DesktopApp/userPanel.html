@@ -1,0 +1,66 @@
+<html>
+  <head>
+    <title>qproject</title>
+    <meta charset="UTF-8">
+    <link href='http://fonts.googleapis.com/css?family=Lato&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
+
+    <!-- Own script -->
+    <script type="text/javascript" src="./js/userPanel.js"></script>
+    <script type="text/javascript" src="./js/action.js"></script>
+
+    <!-- Speech -->
+    <script type="text/javascript" src="./api/webspeech.js"></script>
+    <script type="text/javascript" src="./js/speech.js"></script>
+
+    <!-- Fullpage js -->
+    <link rel="stylesheet" type="text/css" href="./node_modules/fullpage.js/jquery.fullPage.css" />
+    <script type="text/javascript" src="./node_modules/fullpage.js/vendors/jquery.slimscroll.min.js"></script>
+    <script type="text/javascript" src="./node_modules/fullpage.js/jquery.fullPage.js"></script>
+    <script src="./node_modules/fullpage.js/vendors/jquery.easings.min.js"></script>
+    <script type="text/javascript" src="./js/menu_in.js"></script>
+
+    <!-- Own style -->
+    <link rel="stylesheet" type="text/css" href="./css/userPanel.css">
+
+    <script src="https://cdn.rawgit.com/t4t5/sweetalert/master/dist/sweetalert.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdn.rawgit.com/t4t5/sweetalert/master/dist/sweetalert.css">
+
+  </head>
+  <body>
+    <div id="upmenu">
+      <h1>qproject</h1>
+    </div>
+    <div id="fullpage">
+        <div class="section">
+          <a onclick="logout()" id="logout_btn">Logout</a>
+          <div class="links">
+          <a href="myExtensions.html">My extensions</a><br>
+          <a href="market.html">Market</a><br>
+          <a href="">About us</a>
+          </div>
+        </div>
+        <div class="section">
+        <div class="settings">
+          <h1>Settings</h1>
+          <table>
+          <tr>
+          <td><h4>Language: </h4></td>
+          <td>
+          <select name="lang" id="lang" onchange="newLang(this.value)">
+          <option disabled>Choose country</option>
+          <option value="en">English</option>
+          <option value="fi">Suomi</option>
+          <option value="ru">Русский</option>
+          </select>
+          </td>
+          </tr>
+          <tr>
+            <td><h4>My name: </h4></td>
+            <td><input type="text" value="" id="name_field" onchange="newName(this.value)"></td>
+          </tr>
+          </table>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,82 @@
+html, body {
+  background: -webkit-linear-gradient(rgb(52, 152, 219), rgb(134, 226, 213));
+  font-family: Lato;
+}
+select {
+    border-radius:4px;
+    box-shadow: 0 3px 0 #ccc, 0 -1px #fff inset;
+    background: #f8f8f8;
+    color:#888;
+    border:none;
+    outline:none;
+    cursor:pointer;
+    width: 150px;
+}
+input{
+	border-radius:4px;
+    box-shadow: 0 3px 0 #ccc, 0 -1px #fff inset;
+    background: #f8f8f8;
+    color:#888;
+    border:none;
+    outline:none;
+    width: 150px;
+}
+a{
+	margin: 20px;
+	text-decoration: none;
+	font-size: 20px;
+	color: black;
+	cursor: pointer;
+}
+a:hover{
+	text-decoration: underline;
+	color: rgb(236, 240, 241);
+}
+.links{
+	position: absolute;
+	top: 100px;
+	width: 300px;
+	margin: 30px;
+	background-color: rgba(236, 236, 236, 0.3);
+	border-radius: 10px;
+}
+#upmenu{
+	position: fixed;
+	width: 100%;
+	height: 70px;
+	background-color: rgba(52, 73, 94,0.8);
+	z-index: 100;
+}
+#upmenu h1{
+	position: absolute;
+	left: 50px;
+}
+#logout_btn{
+	text-decoration: none;
+	position: absolute;
+	top: 80px;
+	left: 20px;
+	font-size: 20px;
+	color: black;
+	cursor:pointer;
+}
+#logout_btn:hover{
+	text-decoration: underline;
+}
+.slide #content{
+	position: relative;
+	top: -200px;
+	left: 100px;
+	font-size: 20;
+	font-family: Arial;
+}
+.settings h1{
+	font-family: Arial;
+	color: white;
+}
+.settings{
+	position: absolute;
+	top: 100px;
+	width: 90%;
+	left: 5%;
+}
