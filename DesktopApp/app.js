@@ -13,7 +13,7 @@ app.on('ready', function(){
      height: 720
    })
   win.setTitle("qproject");
-  win.webContents.openDevTools();
+  //win.webContents.openDevTools();
   win.loadUrl('file://' + __dirname + '/start.html');
   win.show();
 

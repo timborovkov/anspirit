@@ -30,7 +30,7 @@ function processLoginResult(data){
     localStorage.setItem('email', data.email);
     localStorage.setItem('pass', $('#login_pass').val());
 
-    $(location).attr('href','file://' + __dirname + '/userPanel.html');
+    $(location).attr('href','file://' + __dirname + '/userMain.html');
   }
 }
 

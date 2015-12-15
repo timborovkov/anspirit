@@ -7,7 +7,7 @@
 			.box{
 			    width: 100px;
 			    height: 100px;
-			    
+
 			    position: absolute;
 			}
 
@@ -49,17 +49,17 @@
 			var box2=$(".eye2");
 			var boxCenter2=[box2.offset().left+box2.width()/2, box2.offset().top+box2.height()/2];
 
-			$(document).mousemove(function(e){    
-			    
-			  var angle = Math.atan2(e.pageX- boxCenter[0],- (e.pageY- boxCenter[1]) )*(180/Math.PI);     
-			  var angle2 = Math.atan2(e.pageX- boxCenter2[0],- (e.pageY- boxCenter2[1]) )*(180/Math.PI);     
-			    box.css({ "-webkit-transform": 'rotate(' + angle + 'deg)'});    
+			$(document).mousemove(function(e){
+
+			  var angle = Math.atan2(e.pageX- boxCenter[0],- (e.pageY- boxCenter[1]) )*(180/Math.PI);
+			  var angle2 = Math.atan2(e.pageX- boxCenter2[0],- (e.pageY- boxCenter2[1]) )*(180/Math.PI);
+			    box.css({ "-webkit-transform": 'rotate(' + angle + 'deg)'});
 			    box.css({ '-moz-transform': 'rotate(' + angle + 'deg)'});
 			    box.css({ 'transform': 'rotate(' + angle + 'deg)'});
-			    box2.css({ "-webkit-transform": 'rotate(' + angle2 + 'deg)'});    
+			    box2.css({ "-webkit-transform": 'rotate(' + angle2 + 'deg)'});
 			    box2.css({ '-moz-transform': 'rotate(' + angle2 + 'deg)'});
 			    box2.css({ 'transform': 'rotate(' + angle2 + 'deg)'});
-			    
+
 
 				});
 			})
@@ -77,7 +77,3 @@
 		</div>
 	</body>
 </html>
-
-
-
-
