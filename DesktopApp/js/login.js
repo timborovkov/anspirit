@@ -1,6 +1,6 @@
 $ = require('jquery')
 var LocalStorage = require('node-localstorage').LocalStorage;
-localStorage = new LocalStorage('./scratch');
+localStorage = new LocalStorage('./storage');
 
 //Process form
 function login(){

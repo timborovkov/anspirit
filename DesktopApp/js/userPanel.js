@@ -1,7 +1,7 @@
 $ = require('jquery')
 var jQuery = require('jquery')
 var LocalStorage = require('node-localstorage').LocalStorage;
-localStorage = new LocalStorage('./scratch')
+localStorage = new LocalStorage('./storage')
 var platform = require('./api/platform.js')
 
 var rec_done = false

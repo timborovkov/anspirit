@@ -52,33 +52,13 @@ function deleteExtension(rowId, rowName){
                   dataType: "json",
                   success: function(data){
                           var filePath = "rules/" + rowName + ".js" ;
-                          fs.unlink(filePath, function (err) {});
-
-                          $.ajax({
-                    				type: 'get',
-                    				url: 'http://80.223.209.170/tim/userExtensions.php',
-                    				data: {'user': localStorage.getItem('id')},
-                    				dataType: 'json',
-                    				success: function(){
-                              array.splice(userExtensions, userExtensions[rowId]);
-                    					var file = './rules.json';
-                    					var exts = JSON.stringify(userExtensions);
-                    					fs.writeFile(file, exts, function(){console.log('rules.json is now updated')});
-                    					for(var i = 0; i < extensions.length; i++) {
-                    					  var file = fs.createWriteStream("rules/" + extensions[i]['name'] + ".js");
-                    						var request = http.get(extensions[i]['pathToExt'], function(response){
-                    							response.pipe(file);
-                    						});
-                    					}
-
-                              sweetAlert('Done', 'extension is now deleted', 'success');
-                    				},
-                    				error: function(a, error){
-                              alert(error);
-                    					console.log(error);
-                    				}
-                    			});
-                        }
+                          fs.unlink(filePath);
+                          array.splice(userExtensions, userExtensions[rowId]);
+                          var file = './rules.json';
+                          var exts = JSON.stringify(userExtensions);
+                          fs.writeFile(file, exts);
+                          sweetAlert('Done', 'extension is now deleted', 'success');
+                      }
                     });
                 }else{
                   var filePath = "rules/" + rowName + ".js" ;

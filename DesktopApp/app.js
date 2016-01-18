@@ -1,4 +1,3 @@
-
 var app = require('app')
 var BrowserWindow = require('browser-window')
 var ipc = require('ipc');
@@ -10,11 +9,12 @@ app.on('ready', function(){
   var win = new BrowserWindow({
      show: false,
      width: 1280,
-     height: 720
+     height: 720,
+     resizable: false,
+     fullscreen: false
    })
-  win.setTitle("qproject");
-  //win.webContents.openDevTools();
-  win.loadUrl('file://' + __dirname + '/start.html');
+  win.webContents.openDevTools();
+  win.loadURL('file://' + __dirname + '/start.html');
   win.show();
 
 
@@ -27,7 +27,8 @@ app.on('ready', function(){
      resizable: false
   })
   ipc.on('payWinShow', function(){
-  	paymentWindow.loadUrl('http://83.136.248.193/qp/pay.php');
+    //paymentWindow.openDevTools();
+  	paymentWindow.loadURL('http://80.223.209.170/tim/pay.php');
   	paymentWindow.show();
   });
   ipc.on('payWinHide', function(){
@@ -42,7 +43,7 @@ app.on('ready', function(){
     alwaysOnTop: true,
     resizable: false,
   })
-  detailsWindow.loadUrl('file://' + __dirname + '/details.html');
+  detailsWindow.loadURL('file://' + __dirname + '/details.html');
   ipc.on('detailsShow', function(){
     detailsWindow.show();
   });

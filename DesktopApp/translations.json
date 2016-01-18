@@ -1,0 +1,29 @@
+{
+  "Logout":{
+    "ru":"Выйти", "fi":"Kirjaudu ulos"
+  },
+  "Settings":{
+    "ru" : "Настройки", "fi" : "Asetukset"
+  },
+  "My Extensions":{
+    "ru":"Мои расширения", "fi":"Minun laajennukset"
+  },
+  "Home":{
+    "ru":"Домой", "fi":"Koti"
+  },
+  "Market":{
+    "ru":"Магазин", "fi":"Kauppa"
+  },
+  "wake me up if you need me":{
+    "ru":"Разбуди меня если я понадоблюсь"
+  },
+  "How can I help you":{
+    "ru":"Как я могу помочь"
+  },
+  "Okey":{
+    "ru":"Окей"
+  },
+  "Speak ...":{
+    "ru":"Говори ..."
+  }
+}

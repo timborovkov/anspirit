@@ -2,24 +2,19 @@
 <html>
 <head>
 	<script type="text/javascript">
-
-	/*
-		Just empty all save files and start application from scratch to use it without errors
-	*/
-
 		var fs = require('fs');
 		$ = require('jquery');
 		var LocalStorage = require('node-localstorage').LocalStorage;
-		localStorage = new LocalStorage('./scratch');
-
-		var http = require('http');
+		var localStorage = new LocalStorage('./storage');
 		var fs = require('fs');
-
+		var mkdirp = require('mkdirp');
+		var download = require('download-file');
 		if(localStorage.getItem('id') == null) {
 			window.location.href = "./login.html";
 		}else{
 			login();
 		}
+
 		//login
 		function login(){
 		  $.ajax({
@@ -32,6 +27,7 @@
 		    error: function(a, error){
 		    	alert("You are not connected to the internet");
 		    },
+				timeout: 3000,
 		    dataType: "json"
 		  });
 		}
@@ -42,27 +38,21 @@
 		    localStorage.setItem('id', data.id);
 		    localStorage.setItem('name', data.name);
 		    localStorage.setItem('version', data.version);
-		    localStorage.setItem('lang', data.lang);
+		    //localStorage.setItem('lang', data.lang);
 		    localStorage.setItem('age', data.age);
 		    localStorage.setItem('tokenCode', data.tokenCode);
 		    localStorage.setItem('email', data.email);
 
 				downloadExtensions();
-
-				//If everything is done and user already in...
-		    $(location).attr('href','file://' + __dirname + '/userMain.html');
 		  }
 		}
 		function downloadExtensions(){
-			var don = false;
-			var err = false;
 			$.ajax({
 				type: 'get',
 				url: 'http://80.223.209.170/tim/userExtensions.php',
 				data: {'user': localStorage.getItem('id')},
 				dataType: 'json',
 				success: function(extensions){
-					alert('check');
 					var file = './rules.json';
 					var exts = JSON.stringify(extensions);
 
@@ -70,18 +60,49 @@
 					fs.writeFile(file, exts, function(){don = true});
 
 					for(var i = 0; i < extensions.length; i++) {
-						var file = fs.createWriteStream("rules/" + extensions[i]['name'] + ".js");
-						var request = http.get(extensions[i]['pathToExt'], function(response) {
-							response.pipe(file);
-						});
+						var url = extensions[i]['pathToExt'];
+						var folderName = extensions[i]['name'];
+						mkdirp('./rules/'+ folderName, function (err) {
+					    if (err) console.error(err)
+					});
+						//Desktop.js download
+						var options = {
+							directory: "./rules",
+							filename: folderName + "/desktop.js"
+						}
+						download(url + "/desktop.js", options, function(err){
+						if (err) console.log("error");
+							//Settings.html download
+							var options = {
+								directory: "./rules",
+								filename: folderName + "/settings.html"
+							}
+							download(url + "/settings.html", options, function(err){
+							if (err) console.log("error");
+							//About.html download
+							var options = {
+									directory: "./rules",
+									filename: folderName + "/about.html"
+							}
+							download(url + "/about.html", options, function(err){
+									if (err) console.log("error");
+									if(i == extensions.length){
+											$(location).attr('href','file://' + __dirname + '/userMain.html');
+									}
+							})
+					})
+			})
+
+
+					}
+					if(extensions.length == 0){
+						$(location).attr('href','file://' + __dirname + '/userMain.html');
 					}
 				},
 				error: function(a, error){
 					console.log(error);
-					err = true;
 				}
 			});
-			while (!don && !err){console.log('wait');}
 		}
 	</script>
 </head>

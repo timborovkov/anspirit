@@ -1,11 +1,9 @@
-//
 function notifyMe(text) {
     var notification = new Notification(text);
 }
-notifyMe("Q stopped working while you are in market");
 
 var LocalStorage = require('node-localstorage').LocalStorage;
-localStorage = new LocalStorage('./scratch');
+localStorage = new LocalStorage('./storage');
 $ = require('jquery');
 
 var platform = require('./api/platform.js');
@@ -59,13 +57,14 @@ function drawRow(rowData) {
 function buy(ext, free){
   $.ajax({
     type: "get",
-    url: 'http://83.136.248.193/qp/buyExt.php',
+    url: 'http://80.223.209.170/tim/buyExt.php',
     data: {'ext': ext, 'user':localStorage.getItem('id'), 'free': free},
     success: function(main){
-      if(main.done){
+      if(!free){
         nextStepBuy(main, ext);
       }else{
-        sweetAlert('Error', 'Server error!', 'error');
+        //nothing to pay
+        sweetAlert('Done', 'New extension has been instaled.\n Extension will start working after you restart app!', 'success');
       }
       },
     error: function(a, error){
@@ -78,38 +77,13 @@ function buy(ext, free){
 function nextStepBuy(main, ext){
       var no = false;
       var reqFinished = false;
-      if (main.toPay == 0){
-              //nothing to pay
-              $.ajax({
-                type: "get",
-                url: 'http://80.223.209.170/tim/buyExt.php' ,
-                data: {'free': true, 'user': localStorage.getItem('id'), 'extID': ext},
-                success: function(data){
-                  reqFinished = true;
-                  if(data.done){
-                    done = true;
-                  }else{
-                    //Fail
-                    no = true;
-                  }
-                },
-                error: function(a, error){
-                    sweetAlert('Error', 'Failed connect to the server', 'error');
-                    console.log(error);
-                },
-                dataType: "json"
-              });
-      }else{
             $.ajax({
               type: "get",
                 url: 'http://80.223.209.170/tim/dataForIP.php' ,
                 data: {'user': localStorage.getItem('id'), 'ext': main.extensionName, 'price': (main.toPay * 100), 'setData': true},
                 success: function(data){
                   reqFinished = true;
-                  console.log(2);
                   if(data.done){
-                    console.log(3);
-                    console.log(data);
                     ipc.send('payWinShow');
                   }else{
                     //Fail
@@ -123,21 +97,21 @@ function nextStepBuy(main, ext){
                 },
                 dataType: "json"
             });
-            console.log(1);
-      }
-      $.ajax({
-        type: "get",
-        url: 'http://80.223.209.170/tim/checkIfPayed.php' ,
-        data: {'user': localStorage.getItem('id'), 'ext': ext},
-        success: function(data){
-            ipc.send('payWinHide');
-            sweetAlert('Done', 'New extension has been instaled.\n Extension will start working after you restart app!', 'success');
-        },
-        error: function(a, error){
 
-        },
-        dataType: "json"
-      });
+            $.ajax({
+              type: "get",
+              url: 'http://80.223.209.170/tim/checkIfPayed.php' ,
+              data: {'user': localStorage.getItem('id'), 'ext': ext},
+              success: function(data){
+                  ipc.send('payWinHide');
+                  sweetAlert('Done', 'New extension has been instaled.\n Extension will start working after you restart app!', 'success');
+              },
+              error: function(a, error){
+                  ipc.send('payWinHide');
+                  sweetAlert('Error', 'Connection timeout...', 'error');
+              },
+              dataType: "json"
+            });
   }
 function details(ext, name){
   localStorage.setItem('detailsForExtName', name);

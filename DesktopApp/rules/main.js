@@ -1,44 +1,36 @@
-exports.runRule = function(speech){
+exports.runRule = function(speech, callback){
+	var r = false;
+	if(getUserLang() == 'en' || getUserLang() == 'ru'){
+		apiAi(speech, function(result){
+				var speechResponse = result["result"]["fulfillment"]["speech"];
+				var action = result['result']['action'];
+				var options = result['result']['parameters'];
 
-	if(speech.contains('hello') || speech.contains('hi')){
-		say('Hi')
-		return true
-	}else if(speech.contains('how are you') || speech.contains('whats up')){
-		say('I really enjoy to help you')
-		return true
-	}else if(speech.contains('platform')){
-		say('Here is your platform information')
-		alert(getPlatform())
-	}else if(speech.contains('open')){
-		if (speech.contains('finder')){
-			open("~/")
-		}else if (speech.contains('browser')){
-			open('http://www.google.com');
-		}
-	}else if(speech.contains('Google')){
-		say('OK ,I will go to google')
-		open('http://www.google.com');
-	}else if(speech.contains('Wikipedia') || speech.contains('wiki')){
-		say('OK ,I will go to wiki')
-		open('http://www.wikipedia.com');
-	}else if(speech.contains('Facebook')){
-		say('OK ,I will go to facebook')
-		open('http://www.facebook.com');
-	}else if(speech.contains('Twitter')){
-		say('OK ,I will go to twitter')
-		open('http://www.twitter.com');
-	}else if(speech.contains('YouTube')){
-		say('OK ,I will go to youtube')
-		open('http://www.youtube.com');
-	}else if(speech.contains('play')){
-		if (speech.contains('music')){
-
-		}
-	}else if(speech.contains('close')){
-		if (speech.contains('active') || speech.contains('this') || speech.contains('current')){
-			say('Sorry but this function is not yet supported')
-		}
+				if(action.contains("smalltalk") || action == null){
+					if(speechResponse == ""){
+						say("okey");
+						console.log(parameters);
+					}else{
+						say(speechResponse);
+					}
+				}else{
+					processAction(speech, action, options);
+				}
+		});
+	}else if(getUserLang() == "fi"){
+		say("Suomen kieli ei vielä toimii")
 	}
+	callback();
+	return r;
+}
 
-	return false;
+function processAction(speech, action, options){
+	$.getJSON("./rules.json", function(data) {
+		for(var i = 0; i < data.length; i++){
+			var ruleData = data[i];
+			var link = "../rules/" + ruleData["name"] + "/desktop.js";
+			var Rule = require(link);
+			Rule.runRule(speech, action, options);
+		}
+	})
 }

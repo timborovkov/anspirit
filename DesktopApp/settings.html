@@ -1,0 +1,90 @@
+
+<!DOCTYPE html>
+<html>
+  <style media="screen">
+    select {
+        border-radius:4px;
+        box-shadow: 0 3px 0 #ccc, 0 -1px #fff inset;
+        background: #f8f8f8;
+        color:#888;
+        border:none;
+        outline:none;
+        cursor:pointer;
+        width: 150px;
+    }
+    input{
+      border-radius:4px;
+        box-shadow: 0 3px 0 #ccc, 0 -1px #fff inset;
+        background: #f8f8f8;
+        color:#888;
+        border:none;
+        outline:none;
+        width: 150px;
+    }
+  </style>
+  <script type="text/javascript">
+    function newName(newName){
+      $.ajax({
+        type: "post",
+          url: 'http://80.223.209.170/tim/changeUser.php',
+          data: {'valueToChange': 'fullname', 'newValue': newName, 'userID': localStorage.getItem('id'), 'tokenCode': localStorage.getItem('tokenCode')},
+          success: function(data){
+            //process response
+              if(data.done){
+                sweetAlert('Done', 'Your name has been updated', 'success')
+                localStorage.setItem('name', newName)
+              }else if(data.error){
+                sweetAlert('Error', 'Something went wrong on server!', 'error')
+                document.getElementById("name_field").value = localStorage.getItem('name')
+              }else if(data.denied){
+                sweetAlert('Error', 'Access denied!', 'error')
+                document.getElementById("name_field").value = localStorage.getItem('name')
+              }else{
+                sweetAlert(data)
+              }
+          },
+          error: function(a, error){
+            sweetAlert('Error', 'Something went wrong on server!', 'error')
+            document.getElementById("name_field").value = localStorage.getItem('name')
+          },
+          dataType: "json"
+      });
+    }
+    function newLang(newLang) {
+      if(document.getElementById("lang_field").value == "ru" || document.getElementById("lang_field").value == "en"){
+        localStorage.removeItem('language');
+        localStorage.setItem('lang', document.getElementById("lang_field").value);
+        window.location.href = "./userMain.html";
+        //TODO Update also on server
+      }
+    }
+    function newCountry(newCountry){
+      sweetAlert('Error', 'Something went wrong on server!', 'error')
+      document.getElementById("country_field").value = localStorage.getItem('country')
+      //TODO
+    }
+  </script>
+  <table align="center" class="settingsTable">
+  <tr><td>Your name: </td><td><input type="text" id="name_field" onchange="newName(this.value);"></td></tr>
+  <tr><td>Your language: </td><td>
+    <select id="lang_field" onchange="newLang(this.value)">
+                      <option value="en">English</option>
+                      <option value="ru">Русский</option>
+                      <option value="fi">Suomi</option>
+                      <option value="se">Svenska</option>
+    </select>
+  </td></tr>
+  <tr><td>Your country: </td><td>
+    <select id="country_field" onchange="newCountry(this.value)">
+                      <option value="USA">USA</option>
+                      <option value="UK">UK</option>
+                      <option value="Germany">Germany</option>
+                      <option value="France">France</option>
+                      <option value="Spain">Spain</option>
+                      <option value="Russia">Russia</option>
+                      <option value="Finland">Finland</option>
+                      <option value="Sweden">Sweden</option>
+    </select>
+  </td></tr>
+  </table>
+</html>
