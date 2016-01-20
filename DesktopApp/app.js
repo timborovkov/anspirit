@@ -43,6 +43,7 @@ app.on('ready', function(){
     alwaysOnTop: true,
     resizable: false,
   })
+  detailsWindow.webContents.openDevTools();
   detailsWindow.loadURL('file://' + __dirname + '/details.html');
   ipc.on('detailsShow', function(){
     detailsWindow.show();
@@ -52,6 +53,10 @@ app.on('ready', function(){
   });
 
   win.on('closed', function() {
+    app.quit();
+  });
+
+  ipc.on('appQuit', function(){
     app.quit();
   });
 })

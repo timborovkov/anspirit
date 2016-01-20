@@ -1,6 +1,7 @@
 var remote = require('remote');
 var Menu = remote.require('menu');
 var MenuItem = remote.require('menu-item');
+var ipc = require('ipc');
 
 var menu = new Menu();
 var template = [
@@ -13,8 +14,8 @@ var template = [
     {
       label: 'Quit',
       accelerator: 'Command+Q',
-      click: function() { 
-        alert('Quit')
+      click: function() {
+        ipc.send("appQuit");
       }
     }
     ]

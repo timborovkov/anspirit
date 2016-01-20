@@ -27,7 +27,7 @@ $(document).ready(function() {
         $(".content").load("./myExtensions.html", function() {
           $.ajax({
               type: "get",
-              url: 'http://80.223.209.170/tim/userExtensions.php',
+              url: getServer() + '/userExtensions.php',
               data: {'user': localStorage.getItem('id')},
               success: function(data){
                 userExtensions = data;

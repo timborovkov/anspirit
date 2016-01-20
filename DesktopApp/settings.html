@@ -25,43 +25,88 @@
   <script type="text/javascript">
     function newName(newName){
       $.ajax({
-        type: "post",
-          url: 'http://80.223.209.170/tim/changeUser.php',
+          type: "post",
+          url: getServer() + '/changeUser.php',
           data: {'valueToChange': 'fullname', 'newValue': newName, 'userID': localStorage.getItem('id'), 'tokenCode': localStorage.getItem('tokenCode')},
           success: function(data){
-            //process response
               if(data.done){
-                sweetAlert('Done', 'Your name has been updated', 'success')
-                localStorage.setItem('name', newName)
+                sweetAlert('Done', 'Your name has been updated', 'success');
+                localStorage.setItem('name', newName);
               }else if(data.error){
-                sweetAlert('Error', 'Something went wrong on server!', 'error')
-                document.getElementById("name_field").value = localStorage.getItem('name')
+                sweetAlert('Error', 'Something went wrong on server!', 'error');
+                document.getElementById("name_field").value = getUserName();
               }else if(data.denied){
-                sweetAlert('Error', 'Access denied!', 'error')
-                document.getElementById("name_field").value = localStorage.getItem('name')
+                sweetAlert('Error', 'Access denied!', 'error');
+                document.getElementById("name_field").value = getUserName();
               }else{
-                sweetAlert(data)
+                sweetAlert(data);
               }
           },
           error: function(a, error){
             sweetAlert('Error', 'Something went wrong on server!', 'error')
-            document.getElementById("name_field").value = localStorage.getItem('name')
+            document.getElementById("name_field").value = getUserName();
           },
           dataType: "json"
       });
     }
     function newLang(newLang) {
-      if(document.getElementById("lang_field").value == "ru" || document.getElementById("lang_field").value == "en"){
-        localStorage.removeItem('language');
-        localStorage.setItem('lang', document.getElementById("lang_field").value);
-        window.location.href = "./userMain.html";
-        //TODO Update also on server
+      if(document.getElementById("lang_field").value == "fi"){
+        sweetAlert("Sorry", "Language not supported yet", "error");
+        document.getElementById("lang_field").value = getUserLang();
+      }else{
+        $.ajax({
+              type: "post",
+              url: getServer() + '/changeUser.php',
+              data: {'valueToChange': 'lang', 'newValue': newLang, 'userID': localStorage.getItem('id'), 'tokenCode': localStorage.getItem('tokenCode')},
+              success: function(data){
+                if(data.done){
+                  localStorage.removeItem('language');
+                  localStorage.setItem('lang', newLang);
+                  window.location.href = "./userMain.html";
+                }else if(data.error){
+                  sweetAlert('Error', 'Something went wrong on server!', 'error')
+                  document.getElementById("lang_field").value = getUserLang();
+                }else if(data.denied){
+                  sweetAlert('Error', 'Access denied!', 'error')
+                  document.getElementById("lang_field").value =  getUserLang();
+                }else{
+                  sweetAlert(data)
+                }
+              },
+              error: function(a, error){
+                sweetAlert('Error', 'Something went wrong on server!', 'error')
+                document.getElementById("lang_field").value = getUserLang();
+              },
+              dataType: "json"
+        });
       }
     }
     function newCountry(newCountry){
-      sweetAlert('Error', 'Something went wrong on server!', 'error')
-      document.getElementById("country_field").value = localStorage.getItem('country')
-      //TODO
+      $.ajax({
+            type: "post",
+            url: getServer() + '/changeUser.php',
+            data: {'valueToChange': 'country', 'newValue': newCountry, 'userID': localStorage.getItem('id'), 'tokenCode': localStorage.getItem('tokenCode')},
+            success: function(data){
+              if(data.done){
+                localStorage.removeItem('language');
+                localStorage.setItem('lang', newCountry);
+                window.location.href = "./userMain.html";
+              }else if(data.error){
+                sweetAlert('Error', 'Something went wrong on server!', 'error')
+                document.getElementById("country_field").value = getUserCountry();
+              }else if(data.denied){
+                sweetAlert('Error', 'Access denied!', 'error')
+                document.getElementById("country_field").value =  getUserCountry();
+              }else{
+                sweetAlert(data)
+              }
+            },
+            error: function(a, error){
+              sweetAlert('Error', 'Something went wrong on server!', 'error')
+              document.getElementById("country_field").value = getUserLang();
+            },
+            dataType: "json"
+      });
     }
   </script>
   <table align="center" class="settingsTable">
@@ -71,7 +116,6 @@
                       <option value="en">English</option>
                       <option value="ru">Русский</option>
                       <option value="fi">Suomi</option>
-                      <option value="se">Svenska</option>
     </select>
   </td></tr>
   <tr><td>Your country: </td><td>

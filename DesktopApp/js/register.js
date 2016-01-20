@@ -24,7 +24,7 @@ function register(){
 	}else{
 		$.ajax({
 	    type: "post",
-	    url: 'http://80.223.209.170/tim/register.php',
+	    url: getServer() + '/register.php',
 	    data: {'email': email, 'password': password, 'name': name,'age': age},
 	    success: function(data){
 	      if (data.done){

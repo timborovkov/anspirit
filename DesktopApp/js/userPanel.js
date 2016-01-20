@@ -59,7 +59,7 @@ function startRec(){
 function newName(newName){
 	$.ajax({
 		type: "post",
-	    url: 'http://80.223.209.170/tim/changeUser.php',
+	    url: getServer() + '/changeUser.php',
 	    data: {'valueToChange': 'fullname', 'newValue': newName, 'userID': localStorage.getItem('id'), 'tokenCode': localStorage.getItem('tokenCode')},
 	    success: function(data){
 	      //process response

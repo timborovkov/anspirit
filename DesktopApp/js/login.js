@@ -6,7 +6,7 @@ localStorage = new LocalStorage('./storage');
 function login(){
   $.ajax({
     type: "post",
-    url: 'http://80.223.209.170/tim/login.php',
+    url: getServer() + '/login.php',
     data: {'email': $('#login_email').val(), 'password': $('#login_pass').val()},
     success: function(data){
       processLoginResult(data);

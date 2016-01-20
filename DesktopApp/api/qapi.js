@@ -22,6 +22,9 @@ function open(link){
 function getPlatform(){
 	return platform;
 }
+function getServer(){
+	return localStorage.getItem("QServer");
+}
 function getUserName(){
 	return localStorage.getItem('name');
 }
@@ -106,4 +109,7 @@ function apiAi(query, callback){
 	});
 
 	request.end()
+}
+function notifyMe(text) {
+    var notification = new Notification(text);
 }

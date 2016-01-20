@@ -1,29 +1,26 @@
-function notifyMe(text) {
-    var notification = new Notification(text);
-}
 
 var LocalStorage = require('node-localstorage').LocalStorage;
 localStorage = new LocalStorage('./storage');
 $ = require('jquery');
-
 var platform = require('./api/platform.js');
 var ipc = require('ipc');
-
 var extensions = null;
 
-$.ajax({
-    type: "get",
-    url: 'http://80.223.209.170/tim/allExtensions.php',
-    data: {},
-    success: function(data){
-      drawTable(data)
-      extensions = data;
-    },
-    error: function(a, error){
-      console.log(error);
-    },
-    dataType: "json"
-  });
+$("document").ready(function(){
+  $.ajax({
+      type: "get",
+      url: getServer() + '/allExtensions.php',
+      data: {},
+      success: function(data){
+        drawTable(data)
+        extensions = data;
+      },
+      error: function(a, error){
+        console.log(error);
+      },
+      dataType: "json"
+    });
+});
 
 function drawTable(data) {
 	if (Object.keys(data).length > 0){
@@ -57,7 +54,7 @@ function drawRow(rowData) {
 function buy(ext, free){
   $.ajax({
     type: "get",
-    url: 'http://80.223.209.170/tim/buyExt.php',
+    url: getServer() + '/buyExt.php',
     data: {'ext': ext, 'user':localStorage.getItem('id'), 'free': free},
     success: function(main){
       if(!free){
@@ -79,7 +76,7 @@ function nextStepBuy(main, ext){
       var reqFinished = false;
             $.ajax({
               type: "get",
-                url: 'http://80.223.209.170/tim/dataForIP.php' ,
+                url: getServer() + '/dataForIP.php' ,
                 data: {'user': localStorage.getItem('id'), 'ext': main.extensionName, 'price': (main.toPay * 100), 'setData': true},
                 success: function(data){
                   reqFinished = true;
@@ -100,7 +97,7 @@ function nextStepBuy(main, ext){
 
             $.ajax({
               type: "get",
-              url: 'http://80.223.209.170/tim/checkIfPayed.php' ,
+              url: getServer() + '/checkIfPayed.php' ,
               data: {'user': localStorage.getItem('id'), 'ext': ext},
               success: function(data){
                   ipc.send('payWinHide');
@@ -114,7 +111,8 @@ function nextStepBuy(main, ext){
             });
   }
 function details(ext, name){
-  localStorage.setItem('detailsForExtName', name);
+  amplify.store('detailsForExt', ext);
+  amplify.store("allExtensions", extensions);
   ipc.send('detailsShow');
 }
 function sleep(milliseconds) {

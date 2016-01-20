@@ -66,7 +66,6 @@ function wakeUp(){
 	  };
 	  annyang.addCommands(commands);
 	  annyang.start();
-		console.log("annyang");
 	}
 }
 function up(){

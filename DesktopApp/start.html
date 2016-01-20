@@ -15,11 +15,13 @@
 			login();
 		}
 
+		localStorage.setItem("QServer", "http://80.223.209.170/tim");
+
 		//login
 		function login(){
 		  $.ajax({
 		    type: "post",
-		    url: 'http://80.223.209.170/tim/login.php',
+		    url: localStorage.getItem("QServer") + '/login.php',
 		    data: {'email': localStorage.getItem('email'), 'password': localStorage.getItem('pass')},
 		    success: function(data){
 		      processLoginResult(data);
@@ -38,10 +40,10 @@
 		    localStorage.setItem('id', data.id);
 		    localStorage.setItem('name', data.name);
 		    localStorage.setItem('version', data.version);
-		    //localStorage.setItem('lang', data.lang);
-		    localStorage.setItem('age', data.age);
+		    localStorage.setItem('lang', data.lang);
 		    localStorage.setItem('tokenCode', data.tokenCode);
 		    localStorage.setItem('email', data.email);
+				localStorage.setItem('country', data.country);
 
 				downloadExtensions();
 		  }
@@ -49,7 +51,7 @@
 		function downloadExtensions(){
 			$.ajax({
 				type: 'get',
-				url: 'http://80.223.209.170/tim/userExtensions.php',
+				url:  localStorage.getItem("QServer") + '/userExtensions.php',
 				data: {'user': localStorage.getItem('id')},
 				dataType: 'json',
 				success: function(extensions){

@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html ng-app="app">
+    <head>
+        <meta charset="utf-8">
+        <title>Cozify</title>
+        <link rel='shortcut icon' type='image/x-icon' href='dist/assets/favicon.ico' />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width, maximum-scale=1">
+        <meta name="msapplication-tap-highlight" content="no" />
+        <!-- css -->
+        <link rel="stylesheet" href="dist/app-ui.css">
+        <!-- link href="https://amp.azure.net/libs/amp/latest/skins/amp-default/azuremediaplayer.min.css" rel="stylesheet" -->
+
+        <!--scripts -->
+        <!-- script src= "https://amp.azure.net/libs/amp/latest/azuremediaplayer.min.js"> </script -->
+        <script src="dist/app-ui.js"></script>
+
+        <script >
+            cozify()
+        </script>
+
+
+    </head>
+
+    <body class="ng-cloak">
+
+        <div ng-include="'/template-header.tpl.html'" ng-controller='HeaderCtrl'></div>
+        <div class='slide-in-menu-drawer' ng-if='!noSwipe &&!offcanvas'></div>
+        <div ui-view='viewMenu' class="ng-cloak"></div>
+        <div ui-view='viewOffcanvas' class="ui-view-container ng-cloak" ng-if='offcanvas'></div>
+
+        <div ng-if='!offcanvas' class="ui-view-container invisible ng-cloak movable" co-swipe='true' co-swipe-top-nav='!menu.previous' co-swipe-start-page='showSwipeViewNo' co-swipe-cb='swipeToView(number)' ng-class='{bymenu:menuOpen}'>
+            <!-- where the content of each page will be rendered -->
+            <div class="swipe-wrapper ng-cloak" >
+                    <div ui-view='viewRules' class="swipe-page ng-cloak"></div>
+                    <div ui-view='viewScenes' class="swipe-page ng-cloak"></div>
+                    <div ui-view='viewDevices' class="swipe-page ng-cloak"></div>
+            </div>
+        </div>
+
+
+        <div class="alerts row" ng-controller="AlertCtrl">
+                <div class="small-10 small-centered medium-8 medium-centered large-6 large-centered columns end" ng-repeat="alert in alerts" >
+                    <div class='alert-box' ng-class='(alert.type || "")' ng-click='closeAlert(alert.id)'>
+                        {{alert.msg}}
+                        <a class='close'>&times;</a>
+                    </div>
+                </div>
+        </div>
+
+        <div class="row page-indicator" ng-class='{demo: DEMO_MODE=="on"}'  ng-if='!noSwipe && !offcanvas'>
+            <div ng-if='DEMO_MODE=="on"' class="small-2 columns"><a co-tap='demoOff()'>DEMO</a></div>
+            <div class="small-6 small-centered text-center columns">
+                  <a co-tap='swipeToRules()' ><span ng-class='{on: menu.isRules, off: !menu.isRules}' ></span></a>
+                  <a co-tap='swipeToScenes()' ><span ng-class='{on: menu.isScenes, off: !menu.isScenes}' ></span></a>
+                  <a co-tap='swipeToDevices()' ><span ng-class='{on: menu.isDevices, off: !menu.isDevices}' > </span></a>
+            </div>
+        </div>
+        <div ng-if="isPilot2" class="small-2 columns recorder"  ng-controller="SpeechCtrl">
+            <a ng-show='ui.isSpeechRecognizer' co-tap='recognizeSpeech()' ></a>
+        </div>
+        <!-- BEGIN: Modals Layout. -->
+        <div co-modals ng-show="subview" class="co-modals" ng-switch="subview">
+            <!-- BEGIN: Alert Modal. -->
+            <div
+                ng-switch-when="alert"
+                ng-controller="ModalsAlert"
+                class="co-modal {{subview}} clearfix">
+
+                <p>
+                    {{ message }}
+                </p>
+
+                <div class="modal-buttons">
+                    <a co-tap="confirm()" class="modal-button full-width">{{ confirmButton }}</a>
+                </div>
+
+                <!-- This is to demonstrate that we can jump from one modal to another.
+                <p>
+                    <a ng-click="jumpToConfirm()" class="jump">Jump over to the confirm modal</a>
+                </p>
+                 -->
+
+            </div>
+            <!-- END: Alert Modal. -->
+
+
+            <!-- BEGIN: Confirm Modal. -->
+            <div
+                ng-switch-when="confirm"
+                ng-controller="ModalsConfirm"
+                class="co-modal {{subview}} clearfix">
+
+                <p>
+                    {{ message }}
+                </p>
+
+                <div class="modal-buttons">
+                    <a co-tap="confirm()" class="modal-button">{{ confirmButton }}</a>
+                    <a co-tap="deny()" class="modal-button">{{ denyButton }}</a>
+               </div>
+
+            </div>
+            <!-- END: Confirm Modal. -->
+
+
+           <!-- BEGIN: Prompt Modal. -->
+            <form
+                ng-switch-when="prompt"
+                ng-controller="ModalsPrompt"
+                ng-submit="submit()"
+                class="co-modal {{subview}} clearfix">
+
+                <p>
+                    {{ message }}
+                </p>
+
+                <p ng-if="errorMessage">
+                    <strong>{{ errorMessage }}</strong>
+                </p>
+
+                <p>
+                    <input type="text" ng-model="form.input" />
+                </p>
+
+                <div class="modal-buttons">
+                    <a co-tap="submit()" class="modal-button">{{ confirmButton }}</a>
+                    <a co-tap="cancel()" class="modal-button">{{ denyButton }}</a>
+                </div>
+
+            </form>
+            <!-- END: Prompt Modal. -->
+
+            <!-- BEGIN: List Modal. -->
+            <form
+                ng-switch-when="list"
+                ng-controller="ModalsList"
+                ng-submit="submit()"
+                class="co-modal {{subview}} clearfix">
+
+                <div class="content">
+                    <div class="row simple-list action-list top">
+                        <div ng-repeat="item in list" class="small-12 columns end">
+                            <div co-tap="submit(item)" class="row valign-middle icon-action-header">
+
+                                <div class="small-10 columns">
+                                    <div class="icon-center-line data">
+                                        <span>{{item.name}}</span>
+                                    </div>
+                                </div>
+
+                                <div class="small-2 columns end">
+                                    <i class="con"><div class="icon icon-done" ng-if='item.selected'></div></i>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-buttons" >
+                    <a class="modal-button full-width" co-tap="submit('new')">
+                        <i class="con"><div class="icon icon-addsmall"></div></i>
+                        <span>{{ confirmButton }}</span>
+                    </a>
+                </div>
+
+            </form>
+            <!-- END: List Modal. -->
+
+        </div>
+        <!-- END: Modals Layout. -->
+    </body>
+
+</html>
