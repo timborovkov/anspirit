@@ -54,22 +54,24 @@
 
     </div>
     <script type="text/javascript">
-      $ = require('jquery');
-      var ipc = require('ipc');
+    (function(){
+        $ = require('jquery');
+        var ipc = require('ipc');
 
-      $("document").ready(function(){
-        var LocalStorage = require('node-localstorage').LocalStorage;
-        localStorage = new LocalStorage('./scratch');
+        $("document").ready(function(){
+          var LocalStorage = require('node-localstorage').LocalStorage;
+          localStorage = new LocalStorage('./scratch');
 
-        setInterval(function(){
-          if(amplify.store('detailsForExt') != null){
-            var id  = amplify.store('detailsForExt') - 1;
-            var ext = amplify.store("allExtensions")[id];
-            document.getElementById("title").innerHTML = ext["name"];
-            $("#descriptionText").load(ext["pathToExt"] + "about.html");
-          }
-        }, 300);
-      });
+          setInterval(function(){
+            if(amplify.store('detailsForExt') != null){
+              var id  = amplify.store('detailsForExt') - 1;
+              var ext = amplify.store("allExtensions")[id];
+              document.getElementById("title").innerHTML = ext["name"];
+              $("#descriptionText").load(ext["pathToExt"] + "about.html");
+            }
+          }, 300);
+        });
+    })()
     </script>
   </body>
 </html>

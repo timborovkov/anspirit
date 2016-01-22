@@ -8,9 +8,9 @@ app.on('ready', function(){
   //Main window
   var win = new BrowserWindow({
      width: 480,
-     height: 340,
-     show: false
-
+     height: 320,
+     show: false,
+     resizable: false
   });
   win.on('closed', function() {
     win = null;
