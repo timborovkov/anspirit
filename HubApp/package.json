@@ -1,0 +1,14 @@
+{
+  "name": "hub-app",
+  "version": "0.1.0",
+  "description": "QHub software side.",
+  "main": "app.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "author": "Timofei Borovkov",
+  "license": "ISC",
+  "devDependencies": {
+    "electron-prebuilt": "^0.36.4"
+  }
+}
