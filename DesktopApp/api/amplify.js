@@ -1,13 +1,4 @@
-/*!
- * Amplify 1.1.2
- *
- * Copyright 2011 - 2013 appendTo LLC. (http://appendto.com/team)
- * Dual licensed under the MIT or GPL licenses.
- * http://appendto.com/open-source-licenses
- *
- * http://amplifyjs.com
- */
- var jQuery = require("jquery");
+var jQuery = require("jquery");
 (function( global, undefined ) {
 var slice = [].slice,
 	subscriptions = {};
@@ -827,4 +818,4 @@ amplify.subscribe( "request.before.ajax", function( resource, settings, ajaxSett
 	};
 });
 
-}( amplify, jQuery ) );
+}( amplify, jQuery ));

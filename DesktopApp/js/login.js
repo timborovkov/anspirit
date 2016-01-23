@@ -25,7 +25,6 @@ function processLoginResult(data){
     localStorage.setItem('name', data.name);
     localStorage.setItem('version', data.version);
     localStorage.setItem('lang', data.lang);
-    localStorage.setItem('age', data.age);
     localStorage.setItem('tokenCode', data.tokenCode);
     localStorage.setItem('email', data.email);
     localStorage.setItem('pass', $('#login_pass').val());

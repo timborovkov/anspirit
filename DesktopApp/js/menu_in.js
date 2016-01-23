@@ -1,25 +1,27 @@
-var remote = require('remote');
-var Menu = remote.require('menu');
-var MenuItem = remote.require('menu-item');
-var ipc = require('ipc');
+(function(){
+  var remote = require('remote');
+  var Menu = remote.require('menu');
+  var MenuItem = remote.require('menu-item');
+  var ipc = require('ipc');
 
-var menu = new Menu();
-var template = [
-  {
-    label: 'qproject',
-  },
-  {
-    label: 'Help',
-    submenu: [
+  var menu = new Menu();
+  var template = [
     {
-      label: 'Quit',
-      accelerator: 'Command+Q',
-      click: function() {
-        ipc.send("appQuit");
+      label: 'qproject',
+    },
+    {
+      label: 'Help',
+      submenu: [
+      {
+        label: 'Quit',
+        accelerator: 'Command+Q',
+        click: function() {
+          ipc.send("appQuit");
+        }
       }
+      ]
     }
-    ]
-  }
-]
-menu = Menu.buildFromTemplate(template);
-Menu.setApplicationMenu(menu);
+  ]
+  menu = Menu.buildFromTemplate(template);
+  Menu.setApplicationMenu(menu);
+})();

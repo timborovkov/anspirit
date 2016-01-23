@@ -1,24 +1,13 @@
-exports.runRule = function(speech, callback){
-	var r = false;
-	if(getUserLang() == 'en' || getUserLang() == 'ru'){
-		apiAi(speech, function(result){
-				var speechResponse = result["result"]["fulfillment"]["speech"];
-				var action = result['result']['action'];
-				var options = result['result']['parameters'];
+$ = require('jquery');
+var qapi = require('../api/qapi.js');
 
-				if(action.contains("smalltalk") || action == null){
-					if(speechResponse == ""){
-						say("okey");
-						console.log(parameters);
-					}else{
-						say(speechResponse);
-					}
-				}else{
-					processAction(speech, action, options);
-				}
-		});
-	}else if(getUserLang() == "fi"){
-		say("Suomen kieli ei vielä toimii")
+exports.runRule = function(speech, callback){
+	var speech = require("../api/speech.js");
+	var r = false;
+	if(qapi.getUserLang() == 'en' || qapi.getUserLang() == 'ru'){
+
+	}else if(qapi.getUserLang() == "fi"){
+		speech.say("Suomen kieli ei vielä toimii")
 	}
 	callback();
 	return r;
@@ -32,5 +21,29 @@ function processAction(speech, action, options){
 			var Rule = require(link);
 			Rule.runRule(speech, action, options);
 		}
-	})
+	});
 }
+
+function processSpeech(speech){
+	apiAi(speech, function(result){
+			var speechResponse = result["result"]["fulfillment"]["speech"];
+			var action = result['result']['action'];
+			var options = result['result']['parameters'];
+
+			if(action.contains("smalltalk") || action == null){
+				if(speechResponse == ""){
+					speech.say("okey");
+					console.log(parameters);
+				}else{
+					speech.say(speechResponse);
+				}
+			}else{
+				processAction(speech, action, options);
+			}
+	});
+}
+
+
+/*
+
+*/

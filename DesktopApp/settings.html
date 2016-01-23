@@ -24,10 +24,12 @@
   </style>
   <script type="text/javascript">
   (function(){
-    function newName(newName){
+    var qapi = require('./api/qapi.js');
+
+    window.newName = function(newName){
       $.ajax({
           type: "post",
-          url: getServer() + '/changeUser.php',
+          url: qapi.getServer() + '/changeUser.php',
           data: {'valueToChange': 'fullname', 'newValue': newName, 'userID': localStorage.getItem('id'), 'tokenCode': localStorage.getItem('tokenCode')},
           success: function(data){
               if(data.done){
@@ -45,19 +47,16 @@
           },
           error: function(a, error){
             sweetAlert('Error', 'Something went wrong on server!', 'error')
-            document.getElementById("name_field").value = getUserName();
+            document.getElementById("name_field").value = qapi.getUserName();
           },
           dataType: "json"
       });
     }
-    function newLang(newLang) {
-      if(document.getElementById("lang_field").value == "fi"){
-        sweetAlert("Sorry", "Language not supported yet", "error");
-        document.getElementById("lang_field").value = getUserLang();
-      }else{
+    window.newLang = function(newLang) {
+      if(document.getElementById("lang_field").value == "en"){
         $.ajax({
               type: "post",
-              url: getServer() + '/changeUser.php',
+              url: qapi.getServer() + '/changeUser.php',
               data: {'valueToChange': 'lang', 'newValue': newLang, 'userID': localStorage.getItem('id'), 'tokenCode': localStorage.getItem('tokenCode')},
               success: function(data){
                 if(data.done){
@@ -80,9 +79,12 @@
               },
               dataType: "json"
         });
+      }else{
+        sweetAlert("Sorry", "Language not supported yet", "error");
+        document.getElementById("lang_field").value = qapi.getUserLang();
       }
     }
-    function newCountry(newCountry){
+    window.newCountry = function(newCountry){
       $.ajax({
             type: "post",
             url: getServer() + '/changeUser.php',
@@ -94,17 +96,17 @@
                 window.location.href = "./userMain.html";
               }else if(data.error){
                 sweetAlert('Error', 'Something went wrong on server!', 'error')
-                document.getElementById("country_field").value = getUserCountry();
+                document.getElementById("country_field").value = qapi.getUserCountry();
               }else if(data.denied){
                 sweetAlert('Error', 'Access denied!', 'error')
-                document.getElementById("country_field").value =  getUserCountry();
+                document.getElementById("country_field").value =  qapi.getUserCountry();
               }else{
                 sweetAlert(data)
               }
             },
             error: function(a, error){
               sweetAlert('Error', 'Something went wrong on server!', 'error')
-              document.getElementById("country_field").value = getUserLang();
+              document.getElementById("country_field").value = qapi.getUserLang();
             },
             dataType: "json"
       });
@@ -117,7 +119,9 @@
     <select id="lang_field" onchange="newLang(this.value)">
                       <option value="en">English</option>
                       <option value="ru">Русский</option>
-                      <option value="fi">Suomi</option>
+                      <option value="de">Deutsch</option>
+                      <option value="fr">Francais</option>
+                      <option value="">option</option>
     </select>
   </td></tr>
   <tr><td>Your country: </td><td>
@@ -126,10 +130,9 @@
                       <option value="UK">UK</option>
                       <option value="Germany">Germany</option>
                       <option value="France">France</option>
-                      <option value="Spain">Spain</option>
                       <option value="Russia">Russia</option>
+                      <option value="Sweden">Spain</option>
                       <option value="Finland">Finland</option>
-                      <option value="Sweden">Sweden</option>
     </select>
   </td></tr>
   </table>
