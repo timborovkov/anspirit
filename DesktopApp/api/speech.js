@@ -1,5 +1,5 @@
 
-(function(speechDiv){
+(function(){
 		var speaker = new RobotSpeaker();
 		var lastUserTalked = 0;
 		var LastQSpeaked = 0;
@@ -7,6 +7,8 @@
 		var recognitionClass = null;
 		var listener = null;
 		var speechDiv = null;
+		var qapi = require('./qapi.js');
+		var waitingToRecognize = false;
 
 		module.exports.speechDiv = function(dv){
 			if(dv){
@@ -19,22 +21,19 @@
 		};
 
 		module.exports.recognize = function(onResult){
-			var a = false;
-			while(!a){
+			if(!QSpeakingNow){
 				listener = new AudioListener();
-				if (listener != null){
-					a = true;
-				}
+			  listener.listen(qapi.getUserLang(), function(text) {
+			  		listener.stop();
+						speechDiv.innerHTML = text;
+						lastUserTalked = new Date().getTime();
+			  		onResult(text);
+			  }, function(text){
+						speechDiv.innerHTML = text;
+				});
+			}else{
+				waitingToRecognize = true;
 			}
-			console.log("Listening...");
-		  listener.listen(getUserLang(), function(text) {
-		  		listener.stop();
-					speechDiv.innerHTML = text;
-					lastUserTalked = new Date().getTime();
-		  		onResult(text);
-		  }, function(text){
-					speechDiv.innerHTML = text;
-			})
 		};
 
 		module.exports.say = function(text, lang){
@@ -42,39 +41,20 @@
 			var callback = function(){
 				LastQSpeaked = now;
 				QSpeakingNow = false;
+				go();
 			};
 			QSpeakingNow = true;
-			if(getUserLang() != "en"){
+			if(qapi.getUserLang() != "en"){
 				speaker.speak(getUserLang(), text, callback);
 			}else{
 				speaker.speak("en-GB", text, callback);
 			}
 		}
-		window.setInterval(function(){
-			if(listener != null){
-					listener.restartListener();
-			}
-		}, 20000);
-		window.setInterval(function(){
-			if(listener != null){
-				var now = new Date().getTime();
-				if(lastUserTalked < (now - 10000) && lastUserTalked != 0){
-					if(!QSpeakingNow){
-						if(LastQSpeaked < (now - 10000) && LastQSpeaked != 0){
-							if(listener)
-							$(".speechBtn").trigger('click');
-						}
-					}
-				}
-			}
-		}, 1000)
-
 
 
 		//Webspeech.js
 		function RobotSpeaker(){
-			var callback = function(){};
-
+			var callback = null;
 			try{
 				this.u = new SpeechSynthesisUtterance();
 			}
@@ -86,15 +66,14 @@
 				this.u.voice = voices[2];
 
 				this.u.onend = function(event) {
-					if(recognitionClass != null){
-						recognitionClass.restartListener();
+					if(callback != null){
+						callback();
 					}
-					callback();
 				};
 				this.speak = function(lang, text, cb){
-					if(recognitionClass != null){
-						recognitionClass.stop();
-					}
+						if(listener != null){
+								listener.stop();
+						}
 						callback = cb;
 						this.u.lang = lang;
 						this.u.text = text;
@@ -134,13 +113,34 @@
 		        this.listener.start();
 						recognitionClass = this;
 		    };
-		    this.stop = function() {
+		    this.stop = function(){
 						this.isListening = false;
-		        this.listener.stop();
-		        console.log("audio listener stopped");
+		        this.listener.abort();
 		    };
 				this.restartListener = function(){
+					this.listener.abort();
 					go();
 				};
+
 		}
+		window.setInterval(function(){
+			if(!QSpeakingNow && waitingToRecognize){
+				waitingToRecognize = false;
+				go();
+			}
+		}, 50);
+		window.setInterval(function(){
+			if(listener != null){
+				var now = new Date().getTime();
+				if(lastUserTalked < (now - 10000) && lastUserTalked != 0){
+					if(!QSpeakingNow){
+						if(LastQSpeaked < (now - 10000) && LastQSpeaked != 0){
+							//if(listene)
+							$(".speechBtn").trigger('click');
+						}
+					}
+				}
+			}
+		}, 500)
+
 })();

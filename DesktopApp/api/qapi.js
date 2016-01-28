@@ -1,10 +1,8 @@
 (function(){
-	//var platform = require('./../platform.js');
 	var $ = require('jquery');
 	var apiai = require('apiai');
 	var LocalStorage = require('node-localstorage').LocalStorage;
-	localStorage = new LocalStorage('../storage')
-	var geoip = require('geoip-lite');
+	localStorage = new LocalStorage('./storage');
 	var Forecast = require('forecast');
 
 	String.prototype.contains = function(it) { return this.indexOf(it) != -1; };
@@ -81,11 +79,8 @@
 		});
 	}
 	module.exports.apiAi = function(query, callback){
-
-		//NO support of FINNISH language
-
 		var app = null;
-		switch (getUserLang()) {
+		switch (module.exports.getUserLang()) {
 			case "en":
 				app = apiai("4d02c7ec3eb7475fa8ec7cfb5f1384a8", "7cb081b3-3963-4d2a-8cd2-338064e3c643");
 				break;
