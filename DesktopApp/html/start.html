@@ -55,7 +55,7 @@
 				data: {'user': localStorage.getItem('id')},
 				dataType: 'json',
 				success: function(extensions){
-					var file = './rules.json';
+					var file = '../rules.json';
 					var exts = JSON.stringify(extensions);
 
 					var fs = require('fs');
@@ -66,7 +66,7 @@
 						var folderName = extensions[i]['name'];
 						mkdirp('./rules/'+ folderName, function (err) {
 					    if (err) console.error(err)
-					});
+						});
 						//Desktop.js download
 						var options = {
 							directory: "./rules",
@@ -109,6 +109,6 @@
 	</script>
 </head>
 <body>
-	<img src="719.GIF" style="position: absolute; left: calc(50% - 25px); top: 300px" width="50px">
+	<img src="../loading.gif" style="position: absolute; left: calc(50% - 25px); top: 300px" width="50px">
 </body>
 </html>
