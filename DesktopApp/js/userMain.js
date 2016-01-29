@@ -1,10 +1,10 @@
   $ = require('jquery');
   var fs = require('fs');
-  var platform = require('./api/platform.js');
+  var platform = require('../api/platform.js');
   var LocalStorage = require('node-localstorage').LocalStorage;
-  var localStorage = new LocalStorage('./storage');
-  var international = require('./api/international.js');
-  var qapi = require('./api/qapi.js');
+  var localStorage = new LocalStorage('../storage');
+  var international = require('../api/international.js');
+  var qapi = require('../api/qapi.js');
 
   $(document).ready(function() {
     $(".content").load("./home.html");

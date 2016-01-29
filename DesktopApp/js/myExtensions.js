@@ -1,6 +1,6 @@
 (function(){
   var $ = require('jquery');
-  var qapi = require('./api/qapi.js');
+  var qapi = require('../api/qapi.js');
   var userExtensions = null;
 
   $("document").ready(function(){
@@ -70,7 +70,7 @@
                     data: {'user': qapi.getUserId(), 'delete': true, 'extID': rowId},
                     dataType: "json",
                     success: function(data){
-                            var filePath = "rules/" + rowName + ".js" ;
+                            var filePath = "../rules/" + rowName + ".js" ;
                             fs.unlink(filePath);
                             array.splice(userExtensions, userExtensions[rowId]);
                             var file = './rules.json';
@@ -80,9 +80,9 @@
                         }
                       });
                   }else{
-                    var filePath = "rules/" + rowName + ".js" ;
+                    var filePath = "../rules/" + rowName + ".js" ;
                     fs.unlink(filePath, function (err) {});
-                    var file = './rules.json';
+                    var file = '../rules.json';
                     var exts = JSON.stringify(userExtensions);
                     fs.writeFile(file, exts, function(){console.log('rules.json is now updated')});
                   }

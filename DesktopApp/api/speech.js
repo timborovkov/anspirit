@@ -1,3 +1,4 @@
+var qapi = require('./qapi.js');
 
 (function(){
 		var speaker = new RobotSpeaker();
@@ -7,7 +8,6 @@
 		var recognitionClass = null;
 		var listener = null;
 		var speechDiv = null;
-		var qapi = require('./qapi.js');
 		var waitingToRecognize = false;
 
 		module.exports.speechDiv = function(dv){

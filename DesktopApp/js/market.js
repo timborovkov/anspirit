@@ -1,11 +1,11 @@
 (function(){
   var LocalStorage = require('node-localstorage').LocalStorage;
-  localStorage = new LocalStorage('./storage');
+  localStorage = new LocalStorage('../storage');
   $ = require('jquery');
-  var platform = require('./api/platform.js');
+  var platform = require('../api/platform.js');
   var ipc = require('ipc');
   var extensions = null;
-  var qapi = require('./api/qapi.js');
+  var qapi = require('../api/qapi.js');
 
   $("document").ready(function(){
     $.ajax({

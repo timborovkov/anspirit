@@ -1,4 +1,4 @@
-$ = require('./js/jquery-2.1.4.min.js');
+$ = require('jquery');
 
 function register(){
 	var email = $('#reg_email').val()

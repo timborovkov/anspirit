@@ -42,7 +42,7 @@
         z-index: 10;
       }
     </style>
-    <script type="text/javascript" src="./api/amplify.js"></script>
+    <script type="text/javascript" src="../api/amplify.js"></script>
   </head>
   <body background-color="lightgrey">
     <button onclick="ipc.send('detailsHide')" style="z-index: 10; position: absolute; left: 85%;"><img src="./pictures/close-icon.png" width="30" height="30"/></button>
@@ -60,7 +60,7 @@
 
         $("document").ready(function(){
           var LocalStorage = require('node-localstorage').LocalStorage;
-          localStorage = new LocalStorage('./scratch');
+          localStorage = new LocalStorage('../scratch');
 
           setInterval(function(){
             if(amplify.store('detailsForExt') != null){

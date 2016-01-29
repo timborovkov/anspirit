@@ -1,7 +1,7 @@
 (function(){
-	var qapi = require('./api/qapi.js');
-	var speech = require("./api/speech.js");
-	var mainRule = require("./rules/main.js");
+	var qapi = require('../api/qapi.js');
+	var speech = require("../api/speech.js");
+	var mainRule = require("../rules/main.js");
 	var wakeUpListener = null;
 	var speechContentDiv = null;
 

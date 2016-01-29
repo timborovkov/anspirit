@@ -1,7 +1,7 @@
   var qapi = require('./qapi.js');
   var translates = [];
   module.exports.prepareTranslates = function(callback){
-    $.getJSON( "./translations.json", function( data ) {
+    $.getJSON( "../translations.json", function( data ) {
       translates = data;
       callback();
     });

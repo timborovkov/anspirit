@@ -8,9 +8,9 @@ exports.runAction = function(action, rulePaths){
 }
 exports.getRulePaths = function(){
   var rules = [];
-  $.getJSON( "./rules.json", function( data ) {
-  	$.each( data, function( key, val ){ 
-  		rules.push("./rules/" + val.name + "/desktop.js");
+  $.getJSON( "../rules.json", function( data ) {
+  	$.each( data, function( key, val ){
+  		rules.push("../rules/" + val.name + "/desktop.js");
   	});
   });
   return rules;
