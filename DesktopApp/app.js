@@ -15,7 +15,7 @@ app.on('ready', function(){
      icon:'./pictures/anspirit.png'
    })
   win.webContents.openDevTools();
-  win.loadURL('file://' + __dirname + '/start.html');
+  win.loadURL('file://' + __dirname + '/html/start.html');
   win.show();
 
 
@@ -45,7 +45,7 @@ app.on('ready', function(){
     resizable: false,
   })
   //detailsWindow.webContents.openDevTools();
-  detailsWindow.loadURL('file://' + __dirname + '/details.html');
+  detailsWindow.loadURL('file://' + __dirname + '/html/details.html');
   ipc.on('detailsShow', function(){
     detailsWindow.show();
   });
