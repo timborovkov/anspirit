@@ -6,8 +6,7 @@
     <title>Q Desktop</title>
     <!-- Own script -->
     <script type="text/javascript" src="../js/userMain.js"></script>
-    <script type="text/javascript" src="../js/action.js"></script>
-    <script type="text/javascript" src="../api/qapi.js"></script>
+    <script type="text/javascript" src="../api/speechProcessingLoop.js"></script>
     <!-- sweetalert -->
     <script src="https://cdn.rawgit.com/t4t5/sweetalert/master/dist/sweetalert.min.js"></script>
     <link rel="stylesheet" type="text/css" href="https://cdn.rawgit.com/t4t5/sweetalert/master/dist/sweetalert.css">
@@ -33,6 +32,7 @@
       </div>
     </div>
     <div class="dialog">
+      <input type="text" name="userTextInput" placeholder="Tipe if can't speak" class="userTextInput">
       <div class="speech" id="speech"></div>
       <div class="speechBtn" id="speechBtn"></div>
     </div>

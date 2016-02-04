@@ -1,35 +1,41 @@
 {
   "Logout":{
-    "ru":"Выйти", "fi":"Kirjaudu ulos"
+    "ru": "Выйти"
   },
   "Settings":{
-    "ru" : "Настройки", "fi" : "Asetukset"
+    "ru": "Настройки"
   },
   "My Extensions":{
-    "ru":"Мои расширения", "fi":"Minun laajennukset"
+    "ru": "Мои расширения"
   },
   "Home":{
-    "ru":"Домой", "fi":"Koti"
+    "ru": "Домой"
   },
   "Market":{
-    "ru":"Магазин", "fi":"Kauppa"
+    "ru": "Магазин"
   },
   "wake me up if you need me":{
-    "ru":"Разбуди меня если я понадоблюсь"
+    "ru": "Разбуди меня если я понадоблюсь"
   },
   "How can I help you":{
-    "ru":"Как я могу помочь"
+    "ru": "Как я могу помочь"
   },
   "okey":{
-    "ru":"окей"
+    "ru": "окей"
   },
   "Speak ...":{
-    "ru":"Говори ..."
+    "ru": "Говори ..."
   },
   "hello":{
-    "ru":"Привет"
+    "ru": "Привет"
   },
   "what did you say?":{
-    "что ты сказал?"
+    "ru": "что ты сказал?"
+  },
+  "Say hello":{
+    "ru": "Скажи привет"
+  },
+  "Sorry I didn't get that":{
+    "ru":"Извини но я не понял"
   }
 }

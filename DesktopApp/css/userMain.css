@@ -50,6 +50,15 @@ html, body {
   overflow: hidden;
   z-index: 100;
 }
+.userTextInput{
+  position: absolute;
+  height: 20px;
+  font-size: 10px;
+  bottom: 80px;
+  left: 10px;
+  width: 200px;
+  z-index: 100;
+}
 .speech{
   position: absolute;
   height: 25px;

@@ -1,6 +1,5 @@
-var qapi = require('./qapi.js');
-
 (function(){
+		var qapi = require('./qapi.js');
 		var speaker = new RobotSpeaker();
 		var lastUserTalked = 0;
 		var LastQSpeaked = 0;
