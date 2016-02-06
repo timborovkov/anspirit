@@ -6,6 +6,7 @@
   //API
   var qapi = require('../api/qapi.js');
   var international = require('../api/international.js');
+  var mainRule = require("../rules/main.js");
 
   //Variables
   var wakeUpListener = new webkitSpeechRecognition();
@@ -41,17 +42,23 @@
   }
   function afterGetSpeech(speech){
     speechDiv.innerHTML = speech;
-    $('.speechBtn').hide('drop', 100);
-    $('.userTextInput').hide('drop', 100);
+    $('.speechBtn').hide('drop', 80);
+    $('.userTextInput').hide('drop', 80);
     doSpeechProcessing(speech, function(){
-      $('.speechBtn').show('drop', 100);
-      $('.userTextInput').show('drop', 100);
+      $('.speechBtn').show('drop', 80);
+      $('.userTextInput').show('drop', 80);
       $('.userTextInput').val("");
       speechDiv.innerHTML = international.getGUIText('Say hello');
       eval("up()");
     });
   }
   function doSpeechProcessing(speech, callBack){
+      //TODO Go through extensions
+      mainRule.runRule(finalValue, function(done){
+					go();
+			});
+      //TODO return if extension used
+      //else apiai
       qapi.apiAi(speech, function(response){
         if(response.status.code != "200"){
           qSay(international.getGUIText("Sorry I didn't get that"), function(){
@@ -68,6 +75,7 @@
               callBack();
             });
           }
+          //TODO Search extension to process action and return
         }
       });
   }

@@ -1,6 +1,6 @@
-/**
- * Created by Tim Borovkov in 2015.
- */
+	/**
+	 * Created by Tim Borovkov in 2015.
+	 */
 	/**
 	 * a robotic speaker who speaks with given text and language
 	 */
