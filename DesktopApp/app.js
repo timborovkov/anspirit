@@ -29,7 +29,7 @@ app.on('ready', function(){
   })
   ipc.on('payWinShow', function(){
     //paymentWindow.openDevTools();
-  	paymentWindow.loadURL('http://80.223.209.170/tim/pay.php');
+  	paymentWindow.loadURL('http://anspirit.org/php/pay.php');
   	paymentWindow.show();
   });
   ipc.on('payWinHide', function(){

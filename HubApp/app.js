@@ -15,7 +15,7 @@ app.on('ready', function(){
   win.on('closed', function() {
     win = null;
   });
-  win.webContents.openDevTools();
-  win.loadURL('file://' + __dirname + '/html/index.html');
+  //win.webContents.openDevTools();
+  win.loadURL('file://' + __dirname + '/html/start.html');
   win.show();
 })

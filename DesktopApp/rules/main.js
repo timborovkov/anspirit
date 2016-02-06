@@ -20,7 +20,7 @@
 					processAction(speech, ruleRes.action, ruleRes.options, callback);
 					return;
 				};
-			}
+				}
 			//No used rules so we can use standart api.ai
 			if(!ruleFound){
 				qapi.apiAi(speech, function(result){
