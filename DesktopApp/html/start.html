@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+	<title>Loading Q, please wait...</title>
 	<script type="text/javascript">
 		var fs = require('fs');
 		$ = require('jquery');
@@ -59,7 +60,10 @@
 					var exts = JSON.stringify(extensions);
 
 					var fs = require('fs');
-					fs.writeFile(file, exts, function(){don = true});
+					fs.writeFile(file, exts, function(){
+						don = true;
+						localStorage.setItem('doneLoadingRules', true);
+					});
 
 					for(var i = 0; i < extensions.length; i++) {
 						var url = extensions[i]['pathToExt'];

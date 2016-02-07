@@ -13,6 +13,7 @@
   var speakerMessage = new SpeechSynthesisUtterance();
   var voices = null;
   var speechDiv = null;
+  var lastActionHappened = 0;
 
   /*
   *
@@ -33,6 +34,7 @@
     });
   }
   function up(){
+    $(".speechBtn").css("-webkit-filter","invert(100%)");
     speechToText(function(notFinalSpeech){
         speechDiv.innerHTML = notFinalSpeech;
       },function(speech){
@@ -43,19 +45,20 @@
     speechDiv.innerHTML = speech;
     $('.speechBtn').hide('drop', 80);
     $('.userTextInput').hide('drop', 80);
+    lastActionNow();
     doSpeechProcessing(speech, function(){
       $('.speechBtn').show('drop', 80);
       $('.userTextInput').show('drop', 80);
       $('.userTextInput').val("");
-      speechDiv.innerHTML = international.getGUIText('Say hello');
+      speechDiv.innerHTML = international.getGUIText('Speak ...');
       eval("up()");
     });
   }
   function doSpeechProcessing(speech, callBack){
       // Go through extensions to get action for speech request
-      $.getJSON("./rules.json", function(data) {
-  			var speechRuleFound = false;
-  			for(var i = 0; i < data.length; i++){
+      $.getJSON("../rules.json", function(data) {
+  			  var speechRuleFound = false;
+  			  for(var i = 0; i < data.length; i++){
       				var ruleData = data[i];
       				var link = "../rules/" + ruleData["name"] + "/desktop.js";
       				var Rule = require(link);
@@ -66,7 +69,7 @@
         				};
               });
     			}
-      		if(!ruleFound){
+      		if(!speechRuleFound){
               //Get action, speech response and options from Api.ai
               qapi.apiAi(speech, function(response){
                 if(response.status.code != "200"){
@@ -75,8 +78,13 @@
                   });
                 }else{
                   var speechResponse = response.result.fulfillment.speech;
-                  if(speechResponse != null){
+                  var htmlResponse = response.result.metadata.html;
+                  if(speechResponse != ""){
                     qSay(speechResponse, function(){
+                      callBack();
+                    });
+                  }else if(htmlResponse != ""){
+                    qSay(htmlResponse, function(){
                       callBack();
                     });
                   }else{
@@ -84,6 +92,7 @@
                       callBack();
                     });
                   }
+                  lastActionNow();
                   //Search extension to process action and return
                   for(var i = 0; i < data.length; i++){
                         var ruleData = data[i];
@@ -131,21 +140,22 @@
 				//wakeup
         wakeUpListener = new webkitSpeechRecognition();
         speechDiv.innerHTML = international.getGUIText('Speak ...');
-        $(".speechBtn").css("-webkit-filter","invert(0%)");
-        $('.userTextInput').hide('drop', 100);
         up();
 			}else{
         //stop
         mainListener = new webkitSpeechRecognition();
         wakeUpListener = new webkitSpeechRecognition();
+        mainListener.isListening = false;
+        wakeUpListener.isListening = false;
         speechDiv.innerHTML = international.getGUIText('Say hello');
-        $('.userTextInput').show('drop', 100);
 				$(".speechBtn").css("-webkit-filter","invert(0%)");
         startMainVoiceLoop();
 			}
 		});
     $(".userTextInput").change(function() {
       var request = $('.userTextInput').val();
+      mainListener = new webkitSpeechRecognition();
+      mainListener.isListening = false;
       afterGetSpeech(request);
     });
   });
@@ -183,6 +193,7 @@
     if(mainListener.isListening){
       mainListener = new webkitSpeechRecognition();
     }
+    mainListener.interimResults = true;
     mainListener.isListening = false;
     mainListener.lang = qapi.getUserLang();
     mainListener.onresult = function(event){
@@ -211,8 +222,40 @@
       speakerMessage.lang = qapi.getUserLang();
     }
     speakerMessage.onend = function(event){
+      lastActionNow();
       callback();
     };
     speechSynthesis.speak(speakerMessage);
   }
+
+  function lastActionNow(){
+    var d = new Date();
+    var n = d.getTime();
+    lastActionHappened = n;
+  }
+
+  //Time executions
+  window.setInterval(function(){
+    var d = new Date();
+    var n = d.getTime();
+    if(mainListener.isListening){
+      if(lastActionHappened < (n - 8000)){
+        //end listening if listening
+        mainListener = new webkitSpeechRecognition();
+        wakeUpListener = new webkitSpeechRecognition();
+        speechDiv.innerHTML = international.getGUIText('Say hello');
+				$(".speechBtn").css("-webkit-filter","invert(0%)");
+        qSay(international.getGUIText('wake me up if you need me'), function(){
+          startMainVoiceLoop();
+        });
+      }
+    }
+  }, 100);
 })();
+
+/*
+$('.speechBtn').show('drop', 80);
+$('.userTextInput').show('drop', 80);
+$('.userTextInput').val("");
+speechDiv.innerHTML = international.getGUIText('Say hello');
+*/
