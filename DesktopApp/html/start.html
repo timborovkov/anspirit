@@ -58,7 +58,7 @@
 				success: function(extensions){
 					var file = '../rules.json';
 					var exts = JSON.stringify(extensions);
-
+					console.log(exts);
 					var fs = require('fs');
 					fs.writeFile(file, exts, function(){
 						don = true;
@@ -93,7 +93,7 @@
 							download(url + "/about.html", options, function(err){
 									if (err) console.log("error");
 									if(i == extensions.length){
-											$(location).attr('href','file://' + __dirname + '/userMain.html');
+											//$(location).attr('href','file://' + __dirname + '/userMain.html');
 									}
 							})
 					})
