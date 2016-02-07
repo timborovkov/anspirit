@@ -98,7 +98,8 @@
                         var ruleData = data[i];
                         var link = "../rules/" + ruleData["name"] + "/desktop.js";
                         var Rule = require(link);
-                        Rule.processSpeech(response.result.action, response.result.parameters, response.result.metadata.emotion,speech, function(ruleRes){
+                        console.log(Rule);
+                        Rule.processActionFromSpeech(response.result.action, response.result.parameters, response.result.metadata.emotion,speech, function(ruleRes){
                           if(ruleRes['done'] == true){
                             actionRuleFound = true;
                             return;

@@ -60,7 +60,7 @@
 
         $("document").ready(function(){
           var LocalStorage = require('node-localstorage').LocalStorage;
-          localStorage = new LocalStorage('../scratch');
+          localStorage = new LocalStorage('./storage');
 
           setInterval(function(){
             if(amplify.store('detailsForExt') != null){
