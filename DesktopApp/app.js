@@ -2,7 +2,7 @@ var app = require('app')
 var BrowserWindow = require('browser-window')
 var ipc = require('ipc');
 var LocalStorage = require('node-localstorage').LocalStorage;
-localStorage = new LocalStorage('./scratch');
+localStorage = new LocalStorage('./storage');
 
 app.on('ready', function(){
 

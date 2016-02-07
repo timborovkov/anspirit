@@ -2,7 +2,7 @@
 	var $ = require('jquery');
 	var apiai = require('apiai');
 	var LocalStorage = require('node-localstorage').LocalStorage;
-	localStorage = new LocalStorage('../storage');
+	localStorage = new LocalStorage('./storage');
 	var Forecast = require('forecast');
 
 	String.prototype.contains = function(it) { return this.indexOf(it) != -1; };
