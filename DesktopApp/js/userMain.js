@@ -20,6 +20,39 @@ require('jquery-ui');
           document.getElementById("settings_menu").innerHTML = international.getGUIText("Settings");
           document.getElementById("logout_btn").innerHTML = international.getGUIText("Logout");
       });
+        var weatherIcon = qapi.GetWeatherIcon();
+        switch (weatherIcon) {
+          case 'wind':
+            $(".cardDiv").css( "background-image", "url(\"../pictures/weather/wind.jpg\")");
+            break;
+          case 'rain':
+            $(".cardDiv").css( "background-image", "url(\"../pictures/weather/glass.jpg\")");
+            break;
+          case 'snow':
+            $(".cardDiv").css( "background-image", "url(\"../pictures/weather/snow.jpg\")");
+            break;
+          case 'clear-day':
+            $(".cardDiv").css( "background-image", "url(\"../pictures/weather/clear-day.jpg\")");
+            break;
+          case 'clear-night':
+            $(".cardDiv").css( "background-image", "url(\"../pictures/weather/clear-night.jpg\")");
+            break;
+          case 'fog':
+            $(".cardDiv").css( "background-image", "url(\"../pictures/weather/fog.jpg\")");
+            break;
+          case 'cloudy':
+            $(".cardDiv").css( "background-image", "url(\"../pictures/weather/cloudy.jpg\")");
+            break;
+          case 'partly-cloudy-day':
+            $(".cardDiv").css( "background-image", "url(\"../pictures/weather/partly-cloudy-day.jpg\")");
+            break;
+          case 'partly-cloudy-night':
+            $(".cardDiv").css( "background-image", "url(\"../pictures/weather/partly-cloudy-night.jpg\")");
+            break;
+          case 'sleet':
+            $(".cardDiv").css( "background-image", "url(\"../pictures/weather/sleet.jpg\")");
+            break;
+        }
 
       $(".menuElement").click(function() {
         var val  = $(this).attr('id');

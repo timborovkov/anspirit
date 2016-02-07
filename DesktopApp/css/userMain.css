@@ -90,7 +90,7 @@ html, body {
   left: 235px;
   height: 100%;
   margin-top: -8px;
-  background-image: url("../pictures/glass.jpg");
+  /*background-image: url("../pictures/weather/glass.jpg");*/
   background-size: cover;
 }
 .logout_btn{

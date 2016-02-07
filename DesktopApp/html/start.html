@@ -11,8 +11,13 @@
 		var mkdirp = require('mkdirp');
 		var ipc = require('ipc');
 		var download = require('download-file');
+		var qapi = require('../api/qapi.js');
 		if(localStorage.getItem('id') == null) {
-			window.location.href = "./login.html";
+			qapi.forecast(function(forecast){
+				var weatherIcon = forecast.currently.icon;
+				localStorage.setItem('weatherIcon', weatherIcon);
+				$(location).attr('href','file://' + __dirname + '/login.html');
+			});
 		}else{
 			login();
 		}
@@ -39,7 +44,11 @@
 		}
 		function processLoginResult(data){
 		  if (!data.login) {
-		    window.location.href = "./login.html";
+				qapi.forecast(function(forecast){
+					var weatherIcon = forecast.currently.icon;
+					localStorage.setItem('weatherIcon', weatherIcon);
+					$(location).attr('href','file://' + __dirname + '/login.html');
+				});
 		  }else{
 		    localStorage.setItem('id', data.id);
 		    localStorage.setItem('name', data.name);
@@ -94,7 +103,11 @@
 							download(url + "/about.html", options, function(err){
 									if (err) console.log("error");
 									if(i == extensions.length){
+										qapi.forecast(function(forecast){
+											var weatherIcon = forecast.currently.icon;
+											localStorage.setItem('weatherIcon', weatherIcon);
 											$(location).attr('href','file://' + __dirname + '/userMain.html');
+										});
 									}
 							})
 					})
@@ -103,7 +116,11 @@
 
 					}
 					if(extensions.length == 0){
-						$(location).attr('href','file://' + __dirname + '/userMain.html');
+						qapi.forecast(function(forecast){
+				      var weatherIcon = forecast.currently.icon;
+							localStorage.setItem('weatherIcon', weatherIcon);
+							$(location).attr('href','file://' + __dirname + '/userMain.html');
+						});
 					}
 				},
 				error: function(a, error){

@@ -16,6 +16,9 @@
 		    }
 		});
 	}
+	module.exports.GetWeatherIcon = function(){
+		return localStorage.getItem('weatherIcon');
+	}
 	module.exports.getServer = function(){
 		return localStorage.getItem("QServer");
 	}
@@ -28,17 +31,25 @@
 	module.exports.getUserCountry = function(){
 		return localStorage.getItem('country');
 	}
+	function getUserCountry(){
+		return localStorage.getItem('country');
+	}
 	module.exports.getUserId = function(){
 		return localStorage.getItem('id');
 	}
 	module.exports.getUserLocation = function(callback){
+		getUserLocation(callback);
+		//position.coords.longitude
+		//position.coords.latitude
+	}
+	function getUserLocation(callback){
 		if(navigator.geolocation){
 			navigator.geolocation.getCurrentPosition(callback);
 		}
 		//position.coords.longitude
 		//position.coords.latitude
 	}
-	module.exports.forecast = function(){
+	module.exports.forecast = function(callback){
 		var longitude, latitude;
 		getUserLocation(function(geo){
 			longitude = geo.coords.longitude;
@@ -54,8 +65,8 @@
 						units: 'f', // Only the first letter is parsed
 						cache: true,      // Cache API requests?
 						ttl: {            // How long to cache requests. Uses syntax from moment.js: http://momentjs.com/docs/#/durations/creating/
-							minutes: 27,
-							seconds: 45
+							minutes: 30,
+							seconds: 00
 							}
 					});
 					break;
@@ -75,6 +86,7 @@
 			forecast.get([latitude, longitude], function(err, weather) {
 			  if(err) return console.log(err);
 			  console.log(weather);
+				callback(weather);
 			});
 		});
 	}
