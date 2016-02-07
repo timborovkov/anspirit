@@ -9,6 +9,7 @@
 		var localStorage = new LocalStorage('./storage');
 		var fs = require('fs');
 		var mkdirp = require('mkdirp');
+		var ipc = require('ipc');
 		var download = require('download-file');
 		if(localStorage.getItem('id') == null) {
 			window.location.href = "./login.html";
@@ -29,6 +30,8 @@
 		    },
 		    error: function(a, error){
 		    	alert("You are not connected to the internet");
+					//exit
+					ipc.send("appQuit");
 		    },
 				timeout: 3000,
 		    dataType: "json"
@@ -56,13 +59,11 @@
 				data: {'user': localStorage.getItem('id')},
 				dataType: 'json',
 				success: function(extensions){
-					var file = '../rules.json';
+					var file = './rules.json';
 					var exts = JSON.stringify(extensions);
-					console.log(exts);
 					var fs = require('fs');
 					fs.writeFile(file, exts, function(){
 						don = true;
-						localStorage.setItem('doneLoadingRules', true);
 					});
 
 					for(var i = 0; i < extensions.length; i++) {
@@ -93,7 +94,7 @@
 							download(url + "/about.html", options, function(err){
 									if (err) console.log("error");
 									if(i == extensions.length){
-											//$(location).attr('href','file://' + __dirname + '/userMain.html');
+											$(location).attr('href','file://' + __dirname + '/userMain.html');
 									}
 							})
 					})
