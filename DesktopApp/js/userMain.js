@@ -76,6 +76,11 @@ require('jquery-ui');
         }
       });
     });
+    window.setInterval(function(){
+      var cardContent = "<br><div class='card'> <h1>card</h1> </div><br>";
+      var contentNow = $(".cards").html();
+      $(".cards").html(cardContent + contentNow);
+    }, 1500);
 })();
   function logout () {
   	localStorage.removeItem('name')
