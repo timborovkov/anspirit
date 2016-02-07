@@ -1,4 +1,5 @@
 $ = require('jquery');
+var qapi = require('../api/qapi.js');
 
 function register(){
 	var email = $('#reg_email').val()
@@ -24,7 +25,7 @@ function register(){
 	}else{
 		$.ajax({
 	    type: "post",
-	    url: getServer() + '/register.php',
+	    url: qapi.getServer() + '/register.php',
 	    data: {'email': email, 'password': password, 'name': name,'age': age},
 	    success: function(data){
 	      if (data.done){

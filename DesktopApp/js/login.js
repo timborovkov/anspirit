@@ -1,12 +1,12 @@
 $ = require('jquery')
 var LocalStorage = require('node-localstorage').LocalStorage;
-localStorage = new LocalStorage('../storage');
-
+localStorage = new LocalStorage('./storage');
+var qapi = require('../api/qapi.js');
 //Process form
 function login(){
   $.ajax({
     type: "post",
-    url: getServer() + '/login.php',
+    url: qapi.getServer() + '/login.php',
     data: {'email': $('#login_email').val(), 'password': $('#login_pass').val()},
     success: function(data){
       processLoginResult(data);

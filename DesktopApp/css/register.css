@@ -1,6 +1,16 @@
 html, body {
+  font-family: Lato;
   overflow: hidden;
-  background: -webkit-linear-gradient(rgb(52, 152, 219), rgb(231, 76, 60));
+  background-color: rgb(245, 245, 245);
+}
+input{
+	outline:none;
+}
+h2{
+  width: 100%;
+  text-align: center;
+  font-family: Arial;
+  font-size: 30px;
 }
 #reg{
     position: absolute;
@@ -36,7 +46,4 @@ html, body {
 }
 #back:hover{
 	text-decoration: underline;
-}
-input{
-	outline:none;
 }
