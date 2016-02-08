@@ -76,7 +76,7 @@
         var no = false;
         var reqFinished = false;
               $.ajax({
-                type: "get",
+                  type: "get",
                   url: qapi.getServer() + '/dataForIP.php' ,
                   data: {'user': qapi.getUserId(), 'ext': main.extensionName, 'price': (main.toPay * 100), 'setData': true},
                   success: function(data){

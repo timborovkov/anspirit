@@ -1,4 +1,3 @@
-var newSmartCardFunction = null;
 (function(){
 	var $ = require('jquery');
 	var apiai = require('apiai');
@@ -17,6 +16,7 @@ var newSmartCardFunction = null;
 		    }
 		});
 	}
+	module.exports.
 	module.exports.GetWeatherIcon = function(){
 		return localStorage.getItem('weatherIcon');
 	}

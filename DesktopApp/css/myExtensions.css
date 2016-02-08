@@ -39,6 +39,5 @@ button:focus{
 	border-color: black;
 	border-width: 1px;
 	color: red;
-	background-color: lightgray;
 	height: 50px;
 }

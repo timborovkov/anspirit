@@ -17,6 +17,7 @@ require('jquery-ui');
           document.getElementById("market_menu").innerHTML = international.getGUIText("Market");
           document.getElementById("home_menu").innerHTML = international.getGUIText("Home");
           document.getElementById("settings_menu").innerHTML = international.getGUIText("Settings");
+          document.getElementById("emoji_menu").innerHTML = international.getGUIText("Emoji");
           document.getElementById("logout_btn").innerHTML = international.getGUIText("Logout");
       });
         var weatherIcon = qapi.GetWeatherIcon();
@@ -72,25 +73,29 @@ require('jquery-ui');
               document.getElementById("country_field").value = localStorage.getItem('country');
             });
             break;
+          case "emoji_menu":
+            $(".content").load("./emoji.html");
+          case "timetable_menu":
+            $(".content").load("./timetable.html");
+          case "iot_menu":
+            $(".content").load("./iot.html");
         }
       });
+      $(".logout_btn").click(function(){
+        localStorage.removeItem('name')
+        localStorage.removeItem('id')
+        localStorage.removeItem('version')
+        localStorage.removeItem('pass')
+        localStorage.removeItem('email')
+        localStorage.removeItem('lang')
+        localStorage.removeItem('age')
+
+        $(location).attr('href','file://' + __dirname + '/login.html')
+      });
     });
-    window.setInterval(function(){
-    }, 1500);
 })();
   function newCard(content){
     var cardContent = "<br><div class='card'> " + content + " </div><br>";
     var contentNow = $(".cards").html();
     $(".cards").html(cardContent + contentNow);
-  }
-  function logout () {
-  	localStorage.removeItem('name')
-  	localStorage.removeItem('id')
-  	localStorage.removeItem('version')
-  	localStorage.removeItem('pass')
-  	localStorage.removeItem('email')
-  	localStorage.removeItem('lang')
-  	localStorage.removeItem('age')
-
-  	$(location).attr('href','file://' + __dirname + '/login.html')
   }
