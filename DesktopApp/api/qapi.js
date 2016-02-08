@@ -1,3 +1,4 @@
+var newSmartCardFunction = null;
 (function(){
 	var $ = require('jquery');
 	var apiai = require('apiai');
@@ -37,10 +38,11 @@
 	module.exports.getUserId = function(){
 		return localStorage.getItem('id');
 	}
+	module.exports.newSmartCard = function(content){
+		newCard(content);
+	}
 	module.exports.getUserLocation = function(callback){
 		getUserLocation(callback);
-		//position.coords.longitude
-		//position.coords.latitude
 	}
 	function getUserLocation(callback){
 		if(navigator.geolocation){

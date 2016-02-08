@@ -11,7 +11,6 @@ require('jquery-ui');
 
     $(document).ready(function() {
       $(".content").load("./home.html");
-
       //Setup UI text
       international.prepareTranslates(function(){
           document.getElementById("myExtensions_menu").innerHTML = international.getGUIText("My Extensions");
@@ -77,11 +76,13 @@ require('jquery-ui');
       });
     });
     window.setInterval(function(){
-      var cardContent = "<br><div class='card'> <h1>card</h1> </div><br>";
-      var contentNow = $(".cards").html();
-      $(".cards").html(cardContent + contentNow);
     }, 1500);
 })();
+  function newCard(content){
+    var cardContent = "<br><div class='card'> " + content + " </div><br>";
+    var contentNow = $(".cards").html();
+    $(".cards").html(cardContent + contentNow);
+  }
   function logout () {
   	localStorage.removeItem('name')
   	localStorage.removeItem('id')
