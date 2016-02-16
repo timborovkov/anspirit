@@ -1,0 +1,49 @@
+html, body {
+  font-family: Lato;
+  overflow: hidden;
+  background-color: rgb(245, 245, 245);
+}
+input{
+	outline:none;
+}
+h2{
+  width: 100%;
+  text-align: center;
+  font-family: Arial;
+  font-size: 30px;
+}
+#login{
+    position: absolute;
+    top: calc(50% - 150px);
+    width: 500px;
+    height: 300px;
+    left: calc(50% - 250px);
+}
+#login input{
+	width: 500px;
+	border-radius: 10px;
+	height: 25px;
+	font-size: 17px;
+	font-family: Arial;
+	border-width: 1px;
+	margin: 10px;
+}
+#login input:focus{
+	border-width: 2px;
+	border-color: black;
+}
+#login_btn{
+	background-color: rgb(46, 204, 113);
+}
+#login_btn:hover{
+	margin: 11px;
+}
+#reg_btn{
+	text-decoration: none;
+	font-size: 20px;
+	font: Arial;
+	color: black;
+}
+#reg_btn:hover{
+	text-decoration: underline;
+}
