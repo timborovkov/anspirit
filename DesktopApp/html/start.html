@@ -43,11 +43,14 @@
 		  });
 		}
 		function processLoginResult(data){
-		  if (!data.login) {
+		  if (!data.login){
 				qapi.forecast(function(forecast){
 					var weatherIcon = forecast.currently.icon;
 					localStorage.setItem('weatherIcon', weatherIcon);
-					$(location).attr('href','file://' + __dirname + '/login.html');
+					qapi.getUserLocation(function(position){
+						localStorage.setItem('UserPosition', {longitude: position.coords.longitude, latitude: position.coords.latitude});
+						$(location).attr('href','file://' + __dirname + '/login.html');
+					});
 				});
 		  }else{
 		    localStorage.setItem('id', data.id);
@@ -57,6 +60,7 @@
 		    localStorage.setItem('tokenCode', data.tokenCode);
 		    localStorage.setItem('email', data.email);
 				localStorage.setItem('country', data.country);
+				localStorage.setItem('hubs', data.hubs);
 
 				downloadExtensions();
 		  }
@@ -106,7 +110,10 @@
 										qapi.forecast(function(forecast){
 											var weatherIcon = forecast.currently.icon;
 											localStorage.setItem('weatherIcon', weatherIcon);
-											$(location).attr('href','file://' + __dirname + '/userMain.html');
+											qapi.getUserLocation(function(position){
+												localStorage.setItem('UserPosition', {longitude: position.coords.longitude, latitude: position.coords.latitude});
+												$(location).attr('href','file://' + __dirname + '/userMain.html');
+											});
 										});
 									}
 							})
@@ -119,7 +126,10 @@
 						qapi.forecast(function(forecast){
 				      var weatherIcon = forecast.currently.icon;
 							localStorage.setItem('weatherIcon', weatherIcon);
-							$(location).attr('href','file://' + __dirname + '/userMain.html');
+							qapi.getUserLocation(function(position){
+								localStorage.setItem('UserPosition', {'longitude': position.coords.longitude, 'latitude': position.coords.latitude});
+								$(location).attr('href','file://' + __dirname + '/userMain.html');
+							});
 						});
 					}
 				},

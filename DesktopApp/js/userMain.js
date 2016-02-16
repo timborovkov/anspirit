@@ -18,7 +18,8 @@ require('jquery-ui');
           document.getElementById("home_menu").innerHTML = international.getGUIText("Home");
           document.getElementById("settings_menu").innerHTML = international.getGUIText("Settings");
           document.getElementById("emoji_menu").innerHTML = international.getGUIText("Emoji");
-          document.getElementById("logout_btn").innerHTML = international.getGUIText("Logout");
+          document.getElementById("timetable_menu").innerHTML = international.getGUIText("Schedule");
+          $("logout_btn").html(international.getGUIText("Logout"));
       });
         var weatherIcon = qapi.GetWeatherIcon();
         switch (weatherIcon) {
@@ -26,7 +27,7 @@ require('jquery-ui');
             $(".cardDiv").css( "background-image", "url(\"../pictures/weather/wind.jpg\")");
             break;
           case 'rain':
-            $(".cardDiv").css( "background-image", "url(\"../pictures/weather/glass.jpg\")");
+            $(".cardDiv").css( "background-image", "url(\"../pictures/weather/rain.jpg\")");
             break;
           case 'snow':
             $(".cardDiv").css( "background-image", "url(\"../pictures/weather/snow.jpg\")");
@@ -75,10 +76,13 @@ require('jquery-ui');
             break;
           case "emoji_menu":
             $(".content").load("./emoji.html");
+            break;
           case "timetable_menu":
             $(".content").load("./timetable.html");
+            break;
           case "iot_menu":
             $(".content").load("./iot.html");
+            break;
         }
       });
       $(".logout_btn").click(function(){

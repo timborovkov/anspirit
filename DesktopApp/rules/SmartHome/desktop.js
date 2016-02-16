@@ -1,12 +1,33 @@
-	exports.processSpeech = function(speech, callback){
-	     var toRet = {'done':false};
-	     //if done is false, rule search will be continued.
-      //if done is true, action must be performed, because rule search/executing will be done.
-	    callback(toRet);
+
+	module.exports.processSpeech = function(speech, cb){
+	    var toRet = {done:false};
+	    cb(toRet);
 	}
-	exports.processActionFromSpeech = function(action, parameters, speech, emotion, callback){
-	     var toRet = {'done':false};
-	     //if done is false, rule search will be continued.
-       //if done is true, action must be performed, because rule search/executing will be done.
-	    callback(toRet);
+	module.exports.processActionFromSpeech = function(action, parameters, speech, emotion, cb){
+	     var toRet = {done:false};
+			 if(action != null){
+				 if(action.contains('smarthome')){
+					 $.ajax({
+						 type: 'get',
+						 url: 'http://localhost:3000/hub',//"http://api.anspirit.net:3000/hub/1",
+						 data: {task: {action: action, parameters: parameters}, secret: global.qapi.getUserSecret(), user: global.qapi.getUserId(), hubId: 1},
+						 success: function(data){
+							 console.log("Data from hub: " + data);
+							 toRet.done = true;
+							 global.qSay("Done", function(){});
+							 cb(toRet);
+						 },
+						 error: function(a, error) {
+							 cb(toRet);
+							 console.error(error);
+						 }
+					 });
+				 }else{
+						cb(toRet);
+				 }
+			 }else{
+				 cb(toRet);
+			 }
 	}
+
+	//TODO get hub id for user

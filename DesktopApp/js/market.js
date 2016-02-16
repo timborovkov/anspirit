@@ -17,7 +17,7 @@
           extensions = data;
         },
         error: function(a, error){
-          console.log(error);
+          console.error(error);
         },
         dataType: "json"
       });

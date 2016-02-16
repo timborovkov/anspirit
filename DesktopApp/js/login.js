@@ -28,6 +28,7 @@ function processLoginResult(data){
     localStorage.setItem('tokenCode', data.tokenCode);
     localStorage.setItem('email', data.email);
     localStorage.setItem('pass', $('#login_pass').val());
+    localStorage.setItem('hubs', data.hubs);
 
     $(location).attr('href','file://' + __dirname + '/userMain.html');
   }

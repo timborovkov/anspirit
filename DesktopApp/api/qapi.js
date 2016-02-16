@@ -16,7 +16,9 @@
 		    }
 		});
 	}
-	module.exports.
+	module.exports.getUserSecret = function(){
+		return localStorage.getItem('tokenCode');
+	}
 	module.exports.GetWeatherIcon = function(){
 		return localStorage.getItem('weatherIcon');
 	}
@@ -91,6 +93,13 @@
 				callback(weather);
 			});
 		});
+	}
+	module.exports.getNearestHub = function(){
+		//TODO get all user hubs
+		//TODO get user coords
+		// coords array
+		var hubsSortedByDistance =
+		geolib.orderByDistance({latitude: 51.515, longitude: 7.453619}, userHubs);
 	}
 	module.exports.apiAi = function(query, callback){
 		var app = null;
