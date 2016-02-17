@@ -50,22 +50,13 @@ html, body {
   overflow: hidden;
   z-index: 100;
 }
-.userTextInput{
-  position: absolute;
-  height: 20px;
-  font-size: 10px;
-  bottom: 80px;
-  left: 10px;
-  width: 200px;
-  z-index: 100;
-}
 .speech{
   position: absolute;
-  height: 25px;
-  font-size: 15px;
-  bottom: 30px;
-  left: 10px;
+  height: 20px;
   width: 230px;
+  font-size: 15px;
+  top: 30px;
+  left: calc(100% - 230px);
   z-index: 100;
 }
 .speechBtn{
@@ -73,7 +64,7 @@ html, body {
   height: 100px;
   width: 100px;
   bottom: 10px;
-  left: 240px;
+  right: 20px;
   z-index: 100;
   background-image: url("../pictures/mic_icon.png");
   background-size: contain;

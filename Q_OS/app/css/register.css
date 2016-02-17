@@ -1,29 +1,29 @@
+@import url(http://fonts.googleapis.com/css?family=Exo);
 html, body {
   font-family: Lato;
-  overflow: hidden;
+  overflow: scroll;
   background-color: rgb(245, 245, 245);
 }
 input{
 	outline:none;
 }
-h2{
+h1{
   width: 100%;
   text-align: center;
-  font-family: Arial;
-  font-size: 30px;
+  font-family: Exo;
+  font-size: 20px;
 }
 #reg{
-    position: absolute;
-    top: calc(50% - 150px);
-    width: 500px;
-    height: 300px;
-    left: calc(50% - 250px);
+  position: absolute;
+  top: calc(50% - 50px);
+  width: 400px;
+  left: calc(50% - 200px);
 }
 #reg input{
-	width: 500px;
+  width: 400px;
 	border-radius: 10px;
-	height: 25px;
-	font-size: 17px;
+	height: 30px;
+	font-size: 15px;
 	font-family: Arial;
 	border-width: 1px;
 	margin: 10px;
@@ -41,7 +41,7 @@ h2{
 #back{
 	text-decoration: none;
 	font-size: 20px;
-	font: Arial;
+	font-family: Exo;
 	color: black;
 }
 #back:hover{

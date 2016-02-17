@@ -173,12 +173,6 @@
         startMainVoiceLoop();
 			}
 		});
-    $(".userTextInput").change(function() {
-      var request = $('.userTextInput').val();
-      mainListener = new webkitSpeechRecognition();
-      mainListener.isListening = false;
-      afterGetSpeech(request);
-    });
   });
 
 

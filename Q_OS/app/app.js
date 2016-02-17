@@ -9,7 +9,9 @@ app.on('ready', function(){
   var win = new BrowserWindow({
      show: false,
      fullscreen: true,
-     resizable: true,
+     height: 320,
+     width: 480,
+     resizable: false,
      icon:'./pictures/anspirit.png'
    })
   win.webContents.openDevTools();
@@ -19,8 +21,8 @@ app.on('ready', function(){
 
   var paymentWindow = new BrowserWindow({
      show: false,
-     width: 400,
-     height: 600,
+     width: 100,
+     height: 200,
      frame: true,
      alwaysOnTop: true,
      resizable: false

@@ -1,3 +1,5 @@
+
+@import url(http://fonts.googleapis.com/css?family=Exo);
 html, body {
   font-family: Lato;
   overflow: hidden;
@@ -6,24 +8,24 @@ html, body {
 input{
 	outline:none;
 }
-h2{
+h1{
   width: 100%;
   text-align: center;
-  font-family: Arial;
-  font-size: 30px;
+  font-family: Exo;
+  font-size: 20px;
 }
 #login{
     position: absolute;
-    top: calc(50% - 150px);
-    width: 500px;
-    height: 300px;
-    left: calc(50% - 250px);
+    top: calc(50% - 50px);
+    width: 400px;
+    height: 100px;
+    left: calc(50% - 200px);
 }
 #login input{
-	width: 500px;
+	width: 400px;
 	border-radius: 10px;
-	height: 25px;
-	font-size: 17px;
+	height: 30px;
+	font-size: 15px;
 	font-family: Arial;
 	border-width: 1px;
 	margin: 10px;
@@ -40,9 +42,9 @@ h2{
 }
 #reg_btn{
 	text-decoration: none;
-	font-size: 20px;
-	font: Arial;
-	color: black;
+	font-size: 17px;
+	font-family: Exo;
+	color: rgb(50, 50, 50);
 }
 #reg_btn:hover{
 	text-decoration: underline;
