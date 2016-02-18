@@ -10,12 +10,6 @@
   }
   module.exports.setStateForDevice = function(state, deviceId){
     /*
-      TODO server
-      1. Get device from database
-      2. Get device's hub id
-      3. Get hub ip
-      4. Send state for device to hub
-
       TODO hub
       1. Get POST {userId, secret, state, device}
       2. Verify user
