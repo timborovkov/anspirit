@@ -2,14 +2,18 @@ var LocalStorage = require('node-localstorage').LocalStorage;
 var localStorage = new LocalStorage('./storage');
 $ = require('jquery');
 require('jquery-ui');
+var geolib = require('geolib');
 
 (function(){
     var fs = require('fs');
     var platform = require('../api/platform.js');
     var international = require('../api/international.js');
     var qapi = require('../api/qapi.js');
-
+    var iot = require('../api/iotCommunication.js');
     $(document).ready(function() {
+      iot.getNearestHub(function(hub){
+        window.NearestHub = hub;
+      });
       $(".content").load("./home.html");
       //Setup UI text
       international.prepareTranslates(function(){
@@ -83,7 +87,7 @@ require('jquery-ui');
           case "iot_menu":
             $(".content").load("./iot.html");
             break;
-        }
+          }
       });
       $(".logout_btn").click(function(){
         localStorage.removeItem('name')

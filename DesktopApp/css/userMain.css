@@ -44,9 +44,9 @@ html, body {
   position: absolute;
   height: 100%;
   background-color: rgba(0, 0, 0, 0);
-  left: 350px;
+  left: 370px;
   right: 150px;
-  margin: -10px;
+  margin: 0px;
   overflow: hidden;
   z-index: 100;
 }
@@ -92,6 +92,12 @@ html, body {
   width: 100%;
   background-size: cover;
   margin: -10px;
+}
+.weather_widget{
+  position: absolute;
+  right: 0px;
+  top: -5px;
+  width: 200px;
 }
 .cards{
   overflow: scroll;

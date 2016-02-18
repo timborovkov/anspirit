@@ -46,7 +46,7 @@
 	module.exports.getUserLocation = function(callback){
 		getUserLocation(callback);
 	}
-	function getUserLocation(callback){
+	function getUserLocation(callback) {
 		if(navigator.geolocation){
 			navigator.geolocation.getCurrentPosition(callback);
 		}
@@ -93,13 +93,6 @@
 				callback(weather);
 			});
 		});
-	}
-	module.exports.getNearestHub = function(){
-		//TODO get all user hubs
-		//TODO get user coords
-		// coords array
-		var hubsSortedByDistance =
-		geolib.orderByDistance({latitude: 51.515, longitude: 7.453619}, userHubs);
 	}
 	module.exports.apiAi = function(query, callback){
 		var app = null;
