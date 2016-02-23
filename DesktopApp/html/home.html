@@ -1,6 +1,44 @@
 <script type="text/javascript">
   $(document).ready(function(){
     //$(".background").load('bg.html');
+
+    //weather widget
+    qapi.forecast(function(weather){
+        var temp = weather.currently.temperature;
+        $(".weather_widget.temperature").html(temp + "°C");
+        switch (qapi.GetWeatherIcon()) {
+          case 'wind':
+            $(".weather_widget.icon").css( "background-image", "url(\"../pictures/weather/icons/wind.png\")");
+            break;
+          case 'rain':
+            $(".weather_widget.icon").css( "background-image", "url(\"../pictures/weather/icons/rain.png\")");
+            break;
+          case 'snow':
+            $(".weather_widget.icon").css( "background-image", "url(\"../pictures/weather/icons/snow.png\")");
+            break;
+          case 'clear-day':
+            $(".weather_widget.icon").css( "background-image", "url(\"../pictures/weather/icons/clear-day.png\")");
+            break;
+          case 'clear-night':
+            $(".weather_widget.icon").css( "background-image", "url(\"../pictures/weather/icons/clear-night.png\")");
+            break;
+          case 'fog':
+            $(".weather_widget.icon").css( "background-image", "url(\"../pictures/weather/icons/fog.png\")");
+            break;
+          case 'cloudy':
+            $(".weather_widget.icon").css( "background-image", "url(\"../pictures/weather/icons/cloudy.png\")");
+            break;
+          case 'partly-cloudy-day':
+            $(".weather_widget.icon").css( "background-image", "url(\"../pictures/weather/icons/partly-cloudy-day.png\")");
+            break;
+          case 'partly-cloudy-night':
+            $(".weather_widget.icon").css( "background-image", "url(\"../pictures/weather/icons/partly-cloudy-night.png\")");
+            break;
+          case 'sleet':
+            $(".weather_widget.icon").css( "background-image", "url(\"../pictures/weather/icons/sleet.png\")");
+            break;
+        }
+    });
   });
 </script>
 <style media="screen">
@@ -8,5 +46,25 @@
     background-color: rgb(245, 245, 245);
     z-index: -1000;
   }
+  .weather_widget.icon{
+    position: absolute;
+    top: 60px;
+    left: 0px;
+    width: 60px;
+    height: 60px;
+    background-size: contain;
+  }
+  .weather_widget.temperature{
+    font-family: Lato;
+    font-size: 20px;
+  }
 </style>
+<div class="weather_widget">
+  <!-- TODO Create weather widget-->
+  <div class="weather_widget temperature"></div>
+  <div class="weather_widget icon"></div>
+</div>
+<div class="cards">
+  <!-- Smart cards will show here as scrolling div -->
+</div>
 <div class="background"></div>

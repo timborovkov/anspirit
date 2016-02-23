@@ -10,23 +10,23 @@ var geolib = require('geolib');
     var international = require('../api/international.js');
     var qapi = require('../api/qapi.js');
     var iot = require('../api/iotCommunication.js');
+
     $(document).ready(function() {
-      iot.getNearestHub(function(hub){
-        window.NearestHub = hub;
-      });
-      $(".content").load("./home.html");
-      //Setup UI text
-      international.prepareTranslates(function(){
-          document.getElementById("myExtensions_menu").innerHTML = international.getGUIText("My Extensions");
-          document.getElementById("market_menu").innerHTML = international.getGUIText("Market");
-          document.getElementById("home_menu").innerHTML = international.getGUIText("Home");
-          document.getElementById("settings_menu").innerHTML = international.getGUIText("Settings");
-          document.getElementById("emoji_menu").innerHTML = international.getGUIText("Emoji");
-          document.getElementById("timetable_menu").innerHTML = international.getGUIText("Schedule");
-          $("logout_btn").html(international.getGUIText("Logout"));
-      });
-        var weatherIcon = qapi.GetWeatherIcon();
-        switch (weatherIcon) {
+        iot.getNearestHub(function(hub){
+          window.NearestHub = hub;
+        });
+        $(".content").load("./home.html");
+        //Setup UI text
+        international.prepareTranslates(function(){
+            document.getElementById("myExtensions_menu").innerHTML = international.getGUIText("My Extensions");
+            document.getElementById("market_menu").innerHTML = international.getGUIText("Market");
+            document.getElementById("home_menu").innerHTML = international.getGUIText("Home");
+            document.getElementById("settings_menu").innerHTML = international.getGUIText("Settings");
+            document.getElementById("emoji_menu").innerHTML = international.getGUIText("Emoji");
+            document.getElementById("timetable_menu").innerHTML = international.getGUIText("Schedule");
+            $("logout_btn").html(international.getGUIText("Logout"));
+        });
+        switch (qapi.GetWeatherIcon()) {
           case 'wind':
             $(".cardDiv").css( "background-image", "url(\"../pictures/weather/wind.jpg\")");
             break;
