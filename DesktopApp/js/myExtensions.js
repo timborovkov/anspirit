@@ -34,12 +34,12 @@
       row.append($("<td align='center'><img src='" + rowData.icon + "' height='50px' width='50px'></td>"));
       row.append($("<td align='center'>" + rowData.name + "</td>"));
       row.append($("<td align='center'>" + rowData.description + "</td>"));
-      row.append($("<td align='center'><button class='deleteBtn' onclick='deleteExtension(\"" + rowData.id + "\", \"" + rowData.name + "\")'>Delete</button></td>"));
+      row.append($("<td align='center'><button class='deleteBtn' onclick='window.deleteExtension(\"" + rowData.id + "\", \"" + rowData.name + "\")'>Delete</button></td>"));
   }
 
 
   //actions
-  function deleteExtension(rowId, rowName){
+  window.deleteExtension = function(rowId, rowName){
       sweetAlert({
       title: "Are you sure?",
       text: "You will delete extension!",
