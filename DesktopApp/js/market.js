@@ -49,13 +49,13 @@
         row.append($("<td align='center'>" + rowData.price + "</td>"));
         free = false;
       }
-      row.append($("<td align='center'><button class='buyBtn' onclick='buy(\"" + rowData.id + "\", " + free + ")'>Buy</button></td>"));
+      row.append($("<td align='center'><button class='buyBtn' onclick='window.buy(\"" + rowData.id + "\", " + free + ")'>Buy</button></td>"));
       row.append("<td align='center'><button onclick='details(\"" + rowData.id + "\", \"" + rowData.name + "\")'>Details</button></td>");
   }
-  function buy(ext, free){
+  window.buy = function(ext, free){
     $.ajax({
       type: "get",
-      url: getServer() + '/buyExt.php',
+      url: qapi.getServer() + '/buyExt.php',
       data: {'ext': ext, 'user': qapi.getUserId(), 'free': free},
       success: function(main){
         if(!free){
