@@ -1,6 +1,6 @@
 (function(){
   var LocalStorage = require('node-localstorage').LocalStorage;
-  localStorage = new LocalStorage('./storage');
+  localStorage = new LocalStorage('../storage');
   $ = require('jquery');
   var platform = require('../api/platform.js');
   var ipc = require('ipc');

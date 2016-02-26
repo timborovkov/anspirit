@@ -1,6 +1,6 @@
 $ = require('jquery')
 var LocalStorage = require('node-localstorage').LocalStorage;
-localStorage = new LocalStorage('./storage');
+localStorage = new LocalStorage('../storage');
 var qapi = require('../api/qapi.js');
 //Process form
 function login(){

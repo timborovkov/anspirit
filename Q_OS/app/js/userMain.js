@@ -1,5 +1,5 @@
 var LocalStorage = require('node-localstorage').LocalStorage;
-var localStorage = new LocalStorage('./storage');
+var localStorage = new LocalStorage('../storage');
 $ = require('jquery');
 require('jquery-ui');
 
