@@ -22,7 +22,7 @@
     */
     $.ajax({
       type: 'get',
-      url: 'http://api.anspirit.org:3000/devices',
+      url: 'http://api.anspirit.net:3000/devices',
       data: {task: {state: state, device: deviceId}, secret: qapi.getUserSecret(), user: qapi.getUserId()},
       success: function(data){
         console.log("Data from hub: " + data);
