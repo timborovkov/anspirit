@@ -1,4 +1,7 @@
 (function(){
+  var LocalStorage = require('node-localstorage').LocalStorage;
+	localStorage = new LocalStorage('./storage');
+
   module.exports.getUserDeviceList = function(userId){
 
   }
@@ -19,7 +22,7 @@
     */
     $.ajax({
       type: 'get',
-      url: 'http://localhost:3000/devices',//"http://api.anspirit.net:3000/devices",
+      url: 'http://api.anspirit.org:3000/devices',
       data: {task: {state: state, device: deviceId}, secret: qapi.getUserSecret(), user: qapi.getUserId()},
       success: function(data){
         console.log("Data from hub: " + data);
@@ -35,14 +38,14 @@
   }
   module.exports.getNearestHub = function(callback){
     $.ajax({
-      type: "get",
+      type: "post",
       url:  qapi.getServer() + "/getUserHubList.php",
-      data: {'id': qapi.getUserId()},
+      data: {'id': qapi.getUserId(), 'password': localStorage.getItem('pass')},
       dataType: 'json',
       success: function(data){
         var userHubList = JSON.parse(data['hubList']);
         var userHubs = [];
-        for (var i = 0; i < userHubList.length; i++) {
+        for (var i = 0; i < userHubList.length; i++){
           userHubs.push(userHubList[i].position);
         }
         qapi.getUserLocation(function(position){
