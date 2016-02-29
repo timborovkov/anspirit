@@ -12,132 +12,146 @@
 		var ipc = require('ipc');
 		var download = require('download-file');
 		var qapi = require('../api/qapi.js');
-		if(localStorage.getItem('id') == null) {
+
+
+fs.exists('~/hubData.json', function(exists) {
+	    if (!exists) {
+				require("../configHub.js").config(function(){
+					start();
+				});
+			}else{
+				start();
+			}
+});
+
+
+function start(){
+	if(localStorage.getItem('id') == null) {
+		qapi.forecast(function(forecast){
+			var weatherIcon = forecast.currently.icon;
+			localStorage.setItem('weatherIcon', weatherIcon);
+			$(location).attr('href','file://' + __dirname + '/login.html');
+		});
+	}else{
+		login();
+	}
+
+	localStorage.setItem("QServer", "http://anspirit.org/php");
+
+	//login
+	function login(){
+		$.ajax({
+			type: "post",
+			url: localStorage.getItem("QServer") + '/login.php',
+			data: {'email': localStorage.getItem('email'), 'password': localStorage.getItem('pass')},
+			success: function(data){
+				processLoginResult(data);
+			},
+			error: function(a, error){
+				alert("You are not connected to the internet");
+				//exit
+				ipc.send("appQuit");
+			},
+			dataType: "json"
+		});
+	}
+	function processLoginResult(data){
+		if (!data.login){
 			qapi.forecast(function(forecast){
 				var weatherIcon = forecast.currently.icon;
 				localStorage.setItem('weatherIcon', weatherIcon);
-				$(location).attr('href','file://' + __dirname + '/login.html');
+				qapi.getUserLocation(function(position){
+					localStorage.setItem('UserPosition', {longitude: position.coords.longitude, latitude: position.coords.latitude});
+					$(location).attr('href','file://' + __dirname + '/login.html');
+				});
 			});
 		}else{
-			login();
-		}
+			localStorage.setItem('id', data.id);
+			localStorage.setItem('name', data.name);
+			localStorage.setItem('version', data.version);
+			localStorage.setItem('lang', data.lang);
+			localStorage.setItem('tokenCode', data.tokenCode);
+			localStorage.setItem('email', data.email);
+			localStorage.setItem('country', data.country);
+			localStorage.setItem('hubs', data.hubs);
 
-		localStorage.setItem("QServer", "http://anspirit.org/php");
-
-		//login
-		function login(){
-		  $.ajax({
-		    type: "post",
-		    url: localStorage.getItem("QServer") + '/login.php',
-		    data: {'email': localStorage.getItem('email'), 'password': localStorage.getItem('pass')},
-		    success: function(data){
-		      processLoginResult(data);
-		    },
-		    error: function(a, error){
-		    	alert("You are not connected to the internet");
-					//exit
-					ipc.send("appQuit");
-		    },
-				timeout: 3000,
-		    dataType: "json"
-		  });
+			downloadExtensions();
 		}
-		function processLoginResult(data){
-		  if (!data.login){
-				qapi.forecast(function(forecast){
-					var weatherIcon = forecast.currently.icon;
-					localStorage.setItem('weatherIcon', weatherIcon);
-					qapi.getUserLocation(function(position){
-						localStorage.setItem('UserPosition', {longitude: position.coords.longitude, latitude: position.coords.latitude});
-						$(location).attr('href','file://' + __dirname + '/login.html');
-					});
+	}
+	function downloadExtensions(){
+		$.ajax({
+			type: 'get',
+			url:  localStorage.getItem("QServer") + '/userExtensions.php',
+			data: {'user': localStorage.getItem('id')},
+			dataType: 'json',
+			success: function(extensions){
+				var file = './rules.json';
+				var exts = JSON.stringify(extensions);
+				var fs = require('fs');
+				fs.writeFile(file, exts, function(){
+					don = true;
 				});
-		  }else{
-		    localStorage.setItem('id', data.id);
-		    localStorage.setItem('name', data.name);
-		    localStorage.setItem('version', data.version);
-		    localStorage.setItem('lang', data.lang);
-		    localStorage.setItem('tokenCode', data.tokenCode);
-		    localStorage.setItem('email', data.email);
-				localStorage.setItem('country', data.country);
-				localStorage.setItem('hubs', data.hubs);
 
-				downloadExtensions();
-		  }
-		}
-		function downloadExtensions(){
-			$.ajax({
-				type: 'get',
-				url:  localStorage.getItem("QServer") + '/userExtensions.php',
-				data: {'user': localStorage.getItem('id')},
-				dataType: 'json',
-				success: function(extensions){
-					var file = './rules.json';
-					var exts = JSON.stringify(extensions);
-					var fs = require('fs');
-					fs.writeFile(file, exts, function(){
-						don = true;
+				for(var i = 0; i < extensions.length; i++) {
+					var url = extensions[i]['pathToExt'];
+					var folderName = extensions[i]['name'];
+					mkdirp('./rules/'+ folderName, function (err) {
+						if (err) console.error(err)
 					});
-
-					for(var i = 0; i < extensions.length; i++) {
-						var url = extensions[i]['pathToExt'];
-						var folderName = extensions[i]['name'];
-						mkdirp('./rules/'+ folderName, function (err) {
-					    if (err) console.error(err)
-						});
-						//Desktop.js download
+					//Desktop.js download
+					var options = {
+						directory: "./rules",
+						filename: folderName + "/desktop.js"
+					}
+					download(url + "/desktop.js", options, function(err){
+					if (err) console.log("error");
+						//Settings.html download
 						var options = {
 							directory: "./rules",
-							filename: folderName + "/desktop.js"
+							filename: folderName + "/settings.html"
 						}
-						download(url + "/desktop.js", options, function(err){
+						download(url + "/settings.html", options, function(err){
 						if (err) console.log("error");
-							//Settings.html download
-							var options = {
+						//About.html download
+						var options = {
 								directory: "./rules",
-								filename: folderName + "/settings.html"
-							}
-							download(url + "/settings.html", options, function(err){
-							if (err) console.log("error");
-							//About.html download
-							var options = {
-									directory: "./rules",
-									filename: folderName + "/about.html"
-							}
-							download(url + "/about.html", options, function(err){
-									if (err) console.log("error");
-									if(i == extensions.length){
-										qapi.forecast(function(forecast){
-											var weatherIcon = forecast.currently.icon;
-											localStorage.setItem('weatherIcon', weatherIcon);
-											qapi.getUserLocation(function(position){
-												localStorage.setItem('UserPosition', {longitude: position.coords.longitude, latitude: position.coords.latitude});
-												$(location).attr('href','file://' + __dirname + '/userMain.html');
-											});
+								filename: folderName + "/about.html"
+						}
+						download(url + "/about.html", options, function(err){
+								if (err) console.log("error");
+								if(i == extensions.length){
+									qapi.forecast(function(forecast){
+										var weatherIcon = forecast.currently.icon;
+										localStorage.setItem('weatherIcon', weatherIcon);
+										qapi.getUserLocation(function(position){
+											localStorage.setItem('UserPosition', {longitude: position.coords.longitude, latitude: position.coords.latitude});
+											$(location).attr('href','file://' + __dirname + '/userMain.html');
 										});
-									}
-							})
-					})
-			})
+									});
+								}
+						})
+				})
+		})
 
 
-					}
-					if(extensions.length == 0){
-						qapi.forecast(function(forecast){
-				      var weatherIcon = forecast.currently.icon;
-							localStorage.setItem('weatherIcon', weatherIcon);
-							qapi.getUserLocation(function(position){
-								localStorage.setItem('UserPosition', {'longitude': position.coords.longitude, 'latitude': position.coords.latitude});
-								$(location).attr('href','file://' + __dirname + '/userMain.html');
-							});
-						});
-					}
-				},
-				error: function(a, error){
-					console.log(error);
 				}
-			});
-		}
+				if(extensions.length == 0){
+					qapi.forecast(function(forecast){
+						var weatherIcon = forecast.currently.icon;
+						localStorage.setItem('weatherIcon', weatherIcon);
+						qapi.getUserLocation(function(position){
+							localStorage.setItem('UserPosition', {'longitude': position.coords.longitude, 'latitude': position.coords.latitude});
+							$(location).attr('href','file://' + __dirname + '/userMain.html');
+						});
+					});
+				}
+			},
+			error: function(a, error){
+				console.log(error);
+			}
+		});
+	}
+}
 	</script>
 </head>
 <body>

@@ -94,13 +94,6 @@
 			});
 		});
 	}
-	module.exports.getNearestHub = function(){
-		//TODO get all user hubs
-		//TODO get user coords
-		// coords array
-		var hubsSortedByDistance =
-		geolib.orderByDistance({latitude: 51.515, longitude: 7.453619}, userHubs);
-	}
 	module.exports.apiAi = function(query, callback){
 		var app = null;
 		switch (module.exports.getUserLang()) {
@@ -126,8 +119,5 @@
 		});
 
 		request.end()
-	}
-	function notifyMe(text) {
-	    var notification = new Notification(text);
 	}
 })();

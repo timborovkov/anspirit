@@ -2,7 +2,7 @@
   "name": "server",
   "version": "1.0.0",
   "description": "Server to accept requests from client faster and safer. Client's can send requests to Anspirit server and it will send all to hub server (here). Or it is possible to contact dirrectly. ",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },

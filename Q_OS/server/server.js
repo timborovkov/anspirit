@@ -3,7 +3,7 @@ var http = require('http').Server(app);
 var io = require('socket.io')(http);
 var bodyParser = require('body-parser');
 
-var HubSecret = null;
+var iot = require('./api/iotServer.js');
 
 app.use(bodyParser.json());
 app.get('/', function(req, res){
@@ -47,12 +47,8 @@ app.post('/deviceSet', function(req, res){
         var responseToSend = {access: true, error: null};
         res.send(JSON.stringify(responseToSend));
         console.log(task);
-        /*  TODO
-          1. Get device type from database
-          2. Find extension for needed device
-          3. Run it with state
-          4.
-        */
+        //Process
+        iot.processRequestForDevice(device, state);
       }else{
         var responseToSend = {access: false, error: 'no access'};
         res.send(JSON.stringify(responseToSend));
@@ -62,6 +58,13 @@ app.post('/deviceSet', function(req, res){
       res.send(JSON.stringify({error: true, type: 'bad request'}));
   }
 });
+
+//<-- DEBUG
+
+  
+
+// -->
+
 
 http.listen(8080, function(){
   //TODO Get hub's secret code
