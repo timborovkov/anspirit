@@ -1,20 +1,19 @@
+
 (function(){
 
   /*
   *     prepare
   */
-  //API
   var qapi = require('../api/qapi.js');
   global.qapi = qapi;
-  var international = require('../api/international.js');
-  var a = 1;
-  //Variables
-  var wakeUpListener = new webkitSpeechRecognition();
-  var mainListener = new webkitSpeechRecognition();
-  var speakerMessage = new SpeechSynthesisUtterance();
-  var voices = null;
-  var speechDiv = null;
-  var lastActionHappened = 0;
+  var international = require('../api/international.js'),
+  a = 1,
+  wakeUpListener = new webkitSpeechRecognition(),
+  mainListener = new webkitSpeechRecognition(),
+  speakerMessage = new SpeechSynthesisUtterance(),
+  voices = null,
+  speechDiv = null,
+  lastActionHappened = 0;
 
   /*
   *
@@ -55,78 +54,127 @@
       eval("up()");
     });
   }
+
+  function afterFirstExtensionsAreDone(extensions, callBack, speechRuleFound, speech){
+      if(!speechRuleFound){
+          //Get action, speech response and options from Api.ai
+          qapi.apiAi(speech, function(response){
+            if(response.status.code != "200"){
+              console.log("Failed to contact API.ai");
+              qSay(international.getGUIText("Sorry I didn't get that"), function(){
+                callBack();
+              });
+            }else{
+              var speechResponse = response.result.fulfillment.speech;
+              var htmlResponse = response.result.metadata.html;
+              lastActionNow();
+              //Search extension to process action and return
+              var doneActionProcessFromSpeechExtensionsCount = 0;
+              for(var i = 0; i < extensions.length; i++){
+                    var ruleData = extensions[i];
+                    var link = "../rules/" + ruleData["name"] + "/desktop.js";
+                    var Rule = require(link);
+                    Rule.processActionFromSpeech(response.result.action, response.result.parameters, response.result.metadata.emotion,speech, function(ruleRes){
+                      doneActionProcessFromSpeechExtensionsCount = doneActionProcessFromSpeechExtensionsCount + 1;
+
+                      //DEBUG
+                      console.log("Extensions count 2 = " + extensions.length);
+                      console.log("Completed count 2  = " + doneActionProcessFromSpeechExtensionsCount);
+
+                      if(ruleRes.done === true){
+                        //Done, extension used
+                        afterSecondExtensionsAreDone(true);
+                      }else{
+                        if(doneActionProcessFromSpeechExtensionsCount == extensions.length){
+                          //Done, no extension found
+                          afterSecondExtensionsAreDone(false);
+                        }
+                      }
+                    });
+                }
+            }
+            function afterSecondExtensionsAreDone(actionRuleFound){
+                if(!actionRuleFound){
+                  if(speechResponse != null || speechResponse != ""){
+                    qSay(speechResponse, function(){
+                      callBack();
+                    });
+                  }else if(htmlResponse != null || htmlResponse != ""){
+                    qSay(htmlResponse, function(){
+                      callBack();
+                    });
+                  }else{
+                    qSay('OK', function(){
+                      callBack();
+                    });
+                  }
+                }else{
+                  console.log("Action done");
+                  callBack();
+                }
+            }
+          });
+      }else{
+        //Speech already processed
+        console.log('speech already processed');
+        callBack();
+      }
+  }
   function doSpeechProcessing(speech, callBack){
       // Go through extensions to get action for speech request
       $.getJSON("../rules.json", function(extensions) {
-  			  var speechRuleFound = false;
-          var firstExtensionsCompletedCount = 0;
-  			  for(var i = 0; i < extensions.length; i++){
-      				var ruleData = extensions[i];
-      				var link = "../rules/" + ruleData["name"] + "/desktop.js";
-      				var Rule = require(link);
-      				Rule.processSpeech(speech, function(ruleRes){
-                if(ruleRes.done == true){
-        					speechRuleFound = true;
-        				}
-                firstExtensionsCompletedCount++
-                afterFirstExtensionsAreDone(firstExtensionsCompletedCount);
-              });
-    			}
-          function afterFirstExtensionsAreDone(extensionsCompleted){
-            if(extensionsCompleted == extensions.length){
-              if(!speechRuleFound){
-                  //Get action, speech response and options from Api.ai
-                  qapi.apiAi(speech, function(response){
-                    if(response.status.code != "200"){
-                      qSay(international.getGUIText("Sorry I didn't get that"), function(){
-                        callBack();
-                      });
-                    }else{
-                      var speechResponse = response.result.fulfillment.speech;
-                      var htmlResponse = response.result.metadata.html;
-                      lastActionNow();
-                      //Search extension to process action and return
-                      var rulesProcessed = 0;
-                      var actionRuleFound = false;
-                      for(var i = 0; i < extensions.length; i++){
-                            var ruleData = extensions[i];
-                            var link = "../rules/" + ruleData["name"] + "/desktop.js";
-                            var Rule = require(link);
-                            rulesProcessed++
-                            Rule.processActionFromSpeech(response.result.action, response.result.parameters, response.result.metadata.emotion,speech, function(ruleRes){
-                              if(ruleRes.done == true){
-                                console.log('Rule used');
-                                actionRuleFound = true;
-                              }
-                              afterSecondExtensionsAreDone(rulesProcessed);
-                            });
-                        }
-                    }
-                    function afterSecondExtensionsAreDone(extensionsCompleted){
-                      if(extensionsCompleted == extensions.length){
-                        if(!actionRuleFound){
-                          if(speechResponse != ""){
-                            qSay(speechResponse, function(){
-                              callBack();
-                            });
-                          }else if(htmlResponse != ""){
-                            qSay(htmlResponse, function(){
-                              callBack();
-                            });
-                          }else{
-                            qSay('OK', function(){
-                              callBack();
-                            });
-                          }
-                        }else{
-                          console.log("Action done");
-                          callBack();
-                        }
-                      }
-                    }
+          if(extensions.length === 0){
+            //No extensions found
+            //Get action, speech response and options from Api.ai
+            qapi.apiAi(speech, function(response){
+              if(response.status.code != "200"){
+                qSay(international.getGUIText("Sorry I didn't get that"), function(){
+                  callBack();
+                });
+              }else{
+                var speechResponse = response.result.fulfillment.speech;
+                var htmlResponse = response.result.metadata.html;
+                lastActionNow();
+                if(speechResponse != null || speechResponse != ""){
+                  qSay(speechResponse, function(){
+                    callBack();
                   });
+                }else if(htmlResponse != null || htmlResponse != ""){
+                  qSay(htmlResponse, function(){
+                    callBack();
+                  });
+                }else{
+                  qSay('OK', function(){
+                    callBack();
+                  });
+                }
               }
+            });
+          }else{
+
+            /*
+            *
+            */
+            var firstExtensionsCompletedCount = 0;
+            for(var i = 0; i < extensions.length; i++){
+                var ruleData = extensions[i],
+                link = "../rules/" + ruleData["name"] + "/desktop.js",
+                Rule = require(link);
+                Rule.processSpeech(speech, function(ruleRes){
+                  if(ruleRes.done === true){
+                    afterFirstExtensionsAreDone(extensions, callBack, true, speech);
+                  }
+                  firstExtensionsCompletedCount++;
+
+                  if(firstExtensionsCompletedCount == extensions.length){
+                    afterFirstExtensionsAreDone(extensions, callBack, false, speech);
+                  }
+                });
             }
+
+            /*
+            *
+            */
           }
 
   		});
@@ -200,7 +248,6 @@
 		wakeUpListener.onresult = function(event){
 			if (event.results.length > 0) {
 					  var result = event.results[event.results.length-1][0].transcript;
-            console.log("speech: " + result);
 						if(result.contains(wakeupCommand)){
 							wakeUpListener.abort();
 							wakeUpListener.isListening = false;
@@ -209,10 +256,10 @@
 			}
 		}
     wakeUpListener.onend = function(event){
-      console.log("Wakeup listener has been stoped");
+      // Wakeup listener has been stoped
     }
 		wakeUpListener.start();
-    console.log("Wakeup listener has been started");
+      // Wakeup listener has been started
 		wakeUpListener.isListening = true;
   }
   function speechToText(notFinal, callback){
@@ -226,7 +273,6 @@
       lastActionNow();
       if (event.results.length > 0) {
 					var result = event.results[event.results.length-1][0].transcript;
-          console.log(result);
           if (event.results.length > 0) {
               var result = event.results[event.results.length-1];
               if(result.isFinal) {
@@ -253,6 +299,10 @@
       lastActionNow();
       callback();
     };
+    speakerMessage.onerror = function(er){
+      console.error(er);
+      callback();
+    }
     speechSynthesis.speak(speakerMessage);
   }
   global.qSay = qSay;

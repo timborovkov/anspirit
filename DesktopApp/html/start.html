@@ -12,6 +12,10 @@
 		var ipc = require('ipc');
 		var download = require('download-file');
 		var qapi = require('../api/qapi.js');
+		var useExt = require('../api/useExtensions.js');
+		var started = 0;
+
+
 		if(localStorage.getItem('id') == null) {
 			qapi.forecast(function(forecast){
 				var weatherIcon = forecast.currently.icon;
@@ -78,50 +82,69 @@
 					fs.writeFile(file, exts, function(){
 						don = true;
 					});
-
-					for(var i = 0; i < extensions.length; i++) {
-						var url = extensions[i]['pathToExt'];
-						var folderName = extensions[i]['name'];
-						mkdirp('./rules/'+ folderName, function (err) {
-					    if (err) console.error(err)
-						});
-						//Desktop.js download
+					deleteFolder("./rules");
+					$.each(extensions, function(key, val){
+						 setupExt(key, function(){
+									 //Execute every extensions on start
+									 //We can use QAPI`s '/api/useExtensions.js'
+									 useExt.getRulePaths(function(paths){
+										 useExt.onStart(paths, function(){
+											 //Last step is redirect to UI view
+											 started = started + 1;
+											 if(started == extensions.length){
+												 qapi.forecast(function(forecast){
+													 var weatherIcon = forecast.currently.icon;
+													 localStorage.setItem('weatherIcon', weatherIcon);
+													  qapi.getUserLocation(function(position){
+													 		localStorage.setItem('UserPosition', {longitude: position.coords.longitude, latitude: position.coords.latitude});
+													 		$(location).attr('href','file://' + __dirname + '/userMain.html');
+												    });
+												  });
+											  }
+									   	});
+								 });
+							 });
+						 });
+				function setupExt(i, callback){
+					var url = extensions[i]['pathToExt'];
+					var folderName = extensions[i]['name'];
+					mkdirp('./rules/'+ folderName, function (err) {
+						if (err) console.error(err)
+					});
+					//Desktop.js download
+					var options = {
+						directory: "./rules",
+						filename: folderName + "/desktop.js"
+					}
+					download(url + "/desktop.js", options, function(err){
+					if (err) console.log("error");
+						//Settings.html download
 						var options = {
 							directory: "./rules",
-							filename: folderName + "/desktop.js"
+							filename: folderName + "/settings.html"
 						}
-						download(url + "/desktop.js", options, function(err){
+						download(url + "/settings.html", options, function(err){
 						if (err) console.log("error");
-							//Settings.html download
-							var options = {
+						//About.html download
+						var options = {
 								directory: "./rules",
-								filename: folderName + "/settings.html"
-							}
-							download(url + "/settings.html", options, function(err){
-							if (err) console.log("error");
-							//About.html download
-							var options = {
-									directory: "./rules",
-									filename: folderName + "/about.html"
-							}
-							download(url + "/about.html", options, function(err){
-									if (err) console.log("error");
-									if(i == extensions.length){
-										qapi.forecast(function(forecast){
-											var weatherIcon = forecast.currently.icon;
-											localStorage.setItem('weatherIcon', weatherIcon);
-											qapi.getUserLocation(function(position){
-												localStorage.setItem('UserPosition', {longitude: position.coords.longitude, latitude: position.coords.latitude});
-												$(location).attr('href','file://' + __dirname + '/userMain.html');
-											});
-										});
-									}
-							})
-					})
-			})
-
-
-					}
+								filename: folderName + "/about.html"
+						}
+						download(url + "/about.html", options, function(err){
+								if (err) console.log("error");
+								//storage.json download
+								var options = {
+										directory: "./rules",
+										filename: folderName + "/storage.json"
+								}
+								download(url + "/about.html", options, function(err){
+										if (err) console.log("error");
+										callback();
+								});
+						});
+				});
+		});
+	}
 					if(extensions.length == 0){
 						qapi.forecast(function(forecast){
 				      var weatherIcon = forecast.currently.icon;
@@ -138,6 +161,23 @@
 				}
 			});
 		}
+
+		var deleteFolder = function(path){
+		  if(fs.existsSync(path) ) {
+		    fs.readdirSync(path).forEach(function(file,index){
+		      var curPath = path + "/" + file;
+		      if(fs.lstatSync(curPath).isDirectory()) { // recurse
+		        deleteFolder(curPath);
+		      } else { // delete file
+		        fs.unlinkSync(curPath);
+		      }
+		    });
+		    fs.rmdirSync(path);
+				//Removed
+		  }else{
+				//Not found path
+			}
+		};
 	</script>
 </head>
 <body>

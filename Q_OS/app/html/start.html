@@ -6,93 +6,105 @@
 		var fs = require('fs');
 		$ = require('jquery');
 		var LocalStorage = require('node-localstorage').LocalStorage;
-		var localStorage = new LocalStorage('../storage');
+		var localStorage = new LocalStorage('./storage');
 		var fs = require('fs');
 		var mkdirp = require('mkdirp');
 		var ipc = require('ipc');
 		var download = require('download-file');
 		var qapi = require('../api/qapi.js');
-
-
-fs.exists('~/hubData.json', function(exists) {
-	    if (!exists) {
-				require("../configHub.js").config(function(){
-					start();
-				});
-			}else{
-				start();
-			}
-});
-
-
-function start(){
-	if(localStorage.getItem('id') == null) {
-		qapi.forecast(function(forecast){
-			var weatherIcon = forecast.currently.icon;
-			localStorage.setItem('weatherIcon', weatherIcon);
-			$(location).attr('href','file://' + __dirname + '/login.html');
-		});
-	}else{
-		login();
-	}
-
-	localStorage.setItem("QServer", "http://anspirit.org/php");
-
-	//login
-	function login(){
-		$.ajax({
-			type: "post",
-			url: localStorage.getItem("QServer") + '/login.php',
-			data: {'email': localStorage.getItem('email'), 'password': localStorage.getItem('pass')},
-			success: function(data){
-				processLoginResult(data);
-			},
-			error: function(a, error){
-				alert("You are not connected to the internet");
-				//exit
-				ipc.send("appQuit");
-			},
-			dataType: "json"
-		});
-	}
-	function processLoginResult(data){
-		if (!data.login){
+		if(localStorage.getItem('id') == null) {
 			qapi.forecast(function(forecast){
 				var weatherIcon = forecast.currently.icon;
 				localStorage.setItem('weatherIcon', weatherIcon);
-				qapi.getUserLocation(function(position){
-					localStorage.setItem('UserPosition', {longitude: position.coords.longitude, latitude: position.coords.latitude});
-					$(location).attr('href','file://' + __dirname + '/login.html');
-				});
+				$(location).attr('href','file://' + __dirname + '/login.html');
 			});
 		}else{
-			localStorage.setItem('id', data.id);
-			localStorage.setItem('name', data.name);
-			localStorage.setItem('version', data.version);
-			localStorage.setItem('lang', data.lang);
-			localStorage.setItem('tokenCode', data.tokenCode);
-			localStorage.setItem('email', data.email);
-			localStorage.setItem('country', data.country);
-			localStorage.setItem('hubs', data.hubs);
-
-			downloadExtensions();
+			login();
 		}
-	}
-	function downloadExtensions(){
-		$.ajax({
-			type: 'get',
-			url:  localStorage.getItem("QServer") + '/userExtensions.php',
-			data: {'user': localStorage.getItem('id')},
-			dataType: 'json',
-			success: function(extensions){
-				var file = './rules.json';
-				var exts = JSON.stringify(extensions);
-				var fs = require('fs');
-				fs.writeFile(file, exts, function(){
-					don = true;
-				});
 
-				for(var i = 0; i < extensions.length; i++) {
+		localStorage.setItem("QServer", "http://anspirit.org/php");
+
+		//login
+		function login(){
+		  $.ajax({
+		    type: "post",
+		    url: localStorage.getItem("QServer") + '/login.php',
+		    data: {'email': localStorage.getItem('email'), 'password': localStorage.getItem('pass')},
+		    success: function(data){
+		      processLoginResult(data);
+		    },
+		    error: function(a, error){
+		    	alert("You are not connected to the internet");
+					//exit
+					ipc.send("appQuit");
+		    },
+				timeout: 3000,
+		    dataType: "json"
+		  });
+		}
+		function processLoginResult(data){
+		  if (!data.login){
+				qapi.forecast(function(forecast){
+					var weatherIcon = forecast.currently.icon;
+					localStorage.setItem('weatherIcon', weatherIcon);
+					qapi.getUserLocation(function(position){
+						localStorage.setItem('UserPosition', {longitude: position.coords.longitude, latitude: position.coords.latitude});
+						$(location).attr('href','file://' + __dirname + '/login.html');
+					});
+				});
+		  }else{
+		    localStorage.setItem('id', data.id);
+		    localStorage.setItem('name', data.name);
+		    localStorage.setItem('version', data.version);
+		    localStorage.setItem('lang', data.lang);
+		    localStorage.setItem('tokenCode', data.tokenCode);
+		    localStorage.setItem('email', data.email);
+				localStorage.setItem('country', data.country);
+				localStorage.setItem('hubs', data.hubs);
+
+				downloadExtensions();
+		  }
+		}
+		function downloadExtensions(){
+			$.ajax({
+				type: 'get',
+				url:  localStorage.getItem("QServer") + '/userExtensions.php',
+				data: {'user': localStorage.getItem('id')},
+				dataType: 'json',
+				success: function(extensions){
+					var file = './rules.json';
+					var exts = JSON.stringify(extensions);
+					var fs = require('fs');
+					fs.writeFile(file, exts, function(){
+						don = true;
+					});
+					deleteFolder("./rules");
+					 $.each(extensions, function(key, val){
+						 console.log(key);
+						 setupExt(key, function(){
+							 if(key == extensions.length - 1){
+							 qapi.forecast(function(forecast){
+								 var weatherIcon = forecast.currently.icon;
+								 localStorage.setItem('weatherIcon', weatherIcon);
+								 qapi.getUserLocation(function(position){
+									 localStorage.setItem('UserPosition', {longitude: position.coords.longitude, latitude: position.coords.latitude});
+
+									 //Execute every extensions on start
+									 //We can use QAPI`s '/api/useExtensions.js'
+									 var useExt = require('../api/useExtensions.js');
+									 useExt.getRulePaths(function(paths){
+										 useExt.onStart(paths, function(){
+											 //Last step is redirect to UI view
+											 $(location).attr('href','file://' + __dirname + '/userMain.html');
+											 });
+										 });
+									 });
+								 });
+							 }
+						 });
+					 });
+
+				function setupExt(i, callback){
 					var url = extensions[i]['pathToExt'];
 					var folderName = extensions[i]['name'];
 					mkdirp('./rules/'+ folderName, function (err) {
@@ -119,39 +131,52 @@ function start(){
 						}
 						download(url + "/about.html", options, function(err){
 								if (err) console.log("error");
-								if(i == extensions.length){
-									qapi.forecast(function(forecast){
-										var weatherIcon = forecast.currently.icon;
-										localStorage.setItem('weatherIcon', weatherIcon);
-										qapi.getUserLocation(function(position){
-											localStorage.setItem('UserPosition', {longitude: position.coords.longitude, latitude: position.coords.latitude});
-											$(location).attr('href','file://' + __dirname + '/userMain.html');
-										});
-									});
+								//storage.json download
+								var options = {
+										directory: "./rules",
+										filename: folderName + "/storage.json"
 								}
-						})
-				})
-		})
-
-
-				}
-				if(extensions.length == 0){
-					qapi.forecast(function(forecast){
-						var weatherIcon = forecast.currently.icon;
-						localStorage.setItem('weatherIcon', weatherIcon);
-						qapi.getUserLocation(function(position){
-							localStorage.setItem('UserPosition', {'longitude': position.coords.longitude, 'latitude': position.coords.latitude});
-							$(location).attr('href','file://' + __dirname + '/userMain.html');
+								download(url + "/about.html", options, function(err){
+										if (err) console.log("error");
+										callback();
+								});
 						});
-					});
-				}
-			},
-			error: function(a, error){
-				console.log(error);
-			}
+				});
 		});
 	}
-}
+					if(extensions.length == 0){
+						qapi.forecast(function(forecast){
+				      var weatherIcon = forecast.currently.icon;
+							localStorage.setItem('weatherIcon', weatherIcon);
+							qapi.getUserLocation(function(position){
+								localStorage.setItem('UserPosition', {'longitude': position.coords.longitude, 'latitude': position.coords.latitude});
+								$(location).attr('href','file://' + __dirname + '/userMain.html');
+							});
+						});
+					}
+				},
+				error: function(a, error){
+					console.log(error);
+				}
+			});
+		}
+
+		var deleteFolder = function(path){
+		  if(fs.existsSync(path) ) {
+		    fs.readdirSync(path).forEach(function(file,index){
+		      var curPath = path + "/" + file;
+		      if(fs.lstatSync(curPath).isDirectory()) { // recurse
+		        deleteFolder(curPath);
+		      } else { // delete file
+		        fs.unlinkSync(curPath);
+		      }
+		    });
+		    fs.rmdirSync(path);
+				//Removed
+		  }else{
+				//Not found path
+			}
+		};
 	</script>
 </head>
 <body>

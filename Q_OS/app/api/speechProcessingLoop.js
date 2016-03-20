@@ -62,7 +62,7 @@
           var firstExtensionsCompletedCount = 0;
   			  for(var i = 0; i < extensions.length; i++){
       				var ruleData = extensions[i];
-      				var link = "../rules/" + ruleData["name"] + "/desktop.js";
+      				var link = "../rules/" + ruleData["name"] + "/hub.js";
       				var Rule = require(link);
       				Rule.processSpeech(speech, function(ruleRes){
                 if(ruleRes.done == true){
@@ -90,7 +90,7 @@
                       var actionRuleFound = false;
                       for(var i = 0; i < extensions.length; i++){
                             var ruleData = extensions[i];
-                            var link = "../rules/" + ruleData["name"] + "/desktop.js";
+                            var link = "../rules/" + ruleData["name"] + "/hub.js";
                             var Rule = require(link);
                             rulesProcessed++
                             Rule.processActionFromSpeech(response.result.action, response.result.parameters, response.result.metadata.emotion,speech, function(ruleRes){

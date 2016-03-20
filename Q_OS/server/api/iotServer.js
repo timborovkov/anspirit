@@ -45,10 +45,33 @@
       data: {device: 1},
       dataType: 'json',
       success: function(data){
+        var deviceType = data.deviceType;
+        var connectionType = data.connectionType;
+
         //2. Convert message for device type
-        
-        //3. Find extension for needed device
-        //4. Run it with state
+        $.getJSON( "../connections.json", function(data) {
+          var device = data[deviceType];
+          var commands = device[connectionType];
+          var command = commands[request];
+
+          //Here we already have device, it's connection type, message.
+          //Now we must use all this data
+
+          switch (connectionType) {
+            case "zigbee":
+              //Send request to Zigbee device
+              
+              break;
+            case "x10":
+              //Send request to 433mhz device
+              break;
+            case "zwave":
+              //Send request to Z-Wave device
+              break;
+          }
+
+        });
+
       },
       error: function(a, error){
         console.error(error);

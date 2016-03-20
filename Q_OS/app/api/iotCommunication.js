@@ -43,17 +43,21 @@
       data: {'id': qapi.getUserId(), 'password': localStorage.getItem('pass')},
       dataType: 'json',
       success: function(data){
-        var userHubList = JSON.parse(data['hubList']);
+        var userHubList = data.hubList;
         var userHubs = [];
-        for (var i = 0; i < userHubList.length; i++) {
-          userHubs.push(userHubList[i].position);
+        for (var i = 0; i < userHubList.length; i++){
+          userHubs.push({'latitude': userHubList[i].latitude, 'longitude': userHubList[i].longitude});
         }
         qapi.getUserLocation(function(position){
-          var hubsSortedByDistance = geolib.orderByDistance({latitude: position['coords']['latitude'], longitude: position['coords']['longitude']}, userHubs);
+          var latitude = position['coords']['latitude'];
+          var longitude = position['coords']['longitude'];
+          console.log(userHubs);
+          var hubsSortedByDistance = geolib.orderByDistance({latitude: latitude, longitude: longitude}, userHubs);
           var nearestId = hubsSortedByDistance[0].key;
           var hubData = userHubList[nearestId];
+          console.log(hubData);
           callback(hubData);
-        })
+        });
       },
       error: function(a, error){
         console.error(error);

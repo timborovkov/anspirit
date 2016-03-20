@@ -16,6 +16,7 @@ app.post('/hub', function(req, res){
   var secret = req.body.secret;
   var user = req.body.user;
   var task = req.body.task;
+
   if(user != null && task != null && secret != null){
     var security = require("./api/verifySecurity.js");
     security.accessForUser(user, secret, function(access){
@@ -24,6 +25,7 @@ app.post('/hub', function(req, res){
         res.send(JSON.stringify(responseToSend));
         console.log(task);
         //TODO get device to manipulate
+        iot.processRequestForDevice(device, );
       }else{
         var responseToSend = {access: false, error: 'no access'};
         res.send(JSON.stringify(responseToSend));
@@ -61,7 +63,7 @@ app.post('/deviceSet', function(req, res){
 
 //<-- DEBUG
 
-  
+
 
 // -->
 

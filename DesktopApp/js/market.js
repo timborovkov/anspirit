@@ -50,7 +50,7 @@
         free = false;
       }
       row.append($("<td align='center'><button class='buyBtn' onclick='window.buy(\"" + rowData.id + "\", " + free + ")'>Buy</button></td>"));
-      row.append("<td align='center'><button onclick='details(\"" + rowData.id + "\", \"" + rowData.name + "\")'>Details</button></td>");
+      row.append("<td align='center'><button onclick='window.details(\"" + rowData.id + "\", \"" + rowData.name + "\")'>Details</button></td>");
   }
   window.buy = function(ext, free){
     $.ajax({
@@ -111,7 +111,7 @@
                 dataType: "json"
               });
     }
-  function details(ext, name){
+  window.details = function(ext, name){
     amplify.store('detailsForExt', ext);
     amplify.store("allExtensions", extensions);
     ipc.send('detailsShow');

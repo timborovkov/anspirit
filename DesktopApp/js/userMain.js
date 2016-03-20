@@ -3,7 +3,6 @@ var localStorage = new LocalStorage('./storage');
 $ = require('jquery');
 require('jquery-ui');
 var geolib = require('geolib');
-
 (function(){
     var fs = require('fs');
     var platform = require('../api/platform.js');
@@ -100,6 +99,11 @@ var geolib = require('geolib');
 
         $(location).attr('href','file://' + __dirname + '/login.html')
       });
+    });
+
+    //Error handling
+    process.on('uncaughtException', function (exception) {
+     // handle or ignore error
     });
 })();
   function newCard(content){
