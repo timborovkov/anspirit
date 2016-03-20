@@ -59,6 +59,7 @@
       if(!speechRuleFound){
           //Get action, speech response and options from Api.ai
           qapi.apiAi(speech, function(response){
+            console.log(response);
             if(response.status.code != "200"){
               console.log("Failed to contact API.ai");
               qSay(international.getGUIText("Sorry I didn't get that"), function(){

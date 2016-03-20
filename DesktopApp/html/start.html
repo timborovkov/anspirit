@@ -178,6 +178,13 @@
 				//Not found path
 			}
 		};
+
+		//Error handling
+		process.on('uncaughtException', function (exception) {
+		 // handle or ignore error
+		 alert("Error: " + exception);
+		 ipc.send("appQuit");
+		});
 	</script>
 </head>
 <body>
