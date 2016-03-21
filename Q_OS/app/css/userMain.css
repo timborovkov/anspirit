@@ -73,7 +73,7 @@ html, body {
   margin: -1px;
   cursor: pointer;
 }
-.cardDiv{
+.fullScreen{
   position: absolute;
   opacity: 0.6;
   z-index: 0;

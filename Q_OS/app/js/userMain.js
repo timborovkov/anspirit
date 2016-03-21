@@ -24,25 +24,25 @@ require('jquery-ui');
         var weatherIcon = qapi.GetWeatherIcon();
         switch (weatherIcon) {
           case 'wind':
-            $(".cardDiv").css( "background-image", "url(\"../pictures/weather/wind.jpg\")");
+            $(".fullScreen").css( "background-image", "url(\"../pictures/weather/wind.jpg\")");
             break;
           case 'rain':
-            $(".cardDiv").css( "background-image", "url(\"../pictures/weather/rain.jpg\")");
+            $(".fullScreen").css( "background-image", "url(\"../pictures/weather/rain.jpg\")");
             break;
           case 'snow':
-            $(".cardDiv").css( "background-image", "url(\"../pictures/weather/snow.jpg\")");
+            $(".fullScreen").css( "background-image", "url(\"../pictures/weather/snow.jpg\")");
             break;
           case 'clear-day':
-            $(".cardDiv").css( "background-image", "url(\"../pictures/weather/clear-day.jpg\")");
+            $(".fullScreen").css( "background-image", "url(\"../pictures/weather/clear-day.jpg\")");
             break;
           case 'clear-night':
-            $(".cardDiv").css( "background-image", "url(\"../pictures/weather/clear-night.jpg\")");
+            $(".fullScreen").css( "background-image", "url(\"../pictures/weather/clear-night.jpg\")");
             break;
           case 'fog':
-            $(".cardDiv").css( "background-image", "url(\"../pictures/weather/fog.jpg\")");
+            $(".fullScreen").css( "background-image", "url(\"../pictures/weather/fog.jpg\")");
             break;
           case 'cloudy':
-            $(".cardDiv").css( "background-image", "url(\"../pictures/weather/cloudy.jpg\")");
+            $(".fullScreen").css( "background-image", "url(\"../pictures/weather/cloudy.jpg\")");
             break;
           case 'partly-cloudy-day':
             $(".cardDiv").css( "background-image", "url(\"../pictures/weather/partly-cloudy-day.jpg\")");
