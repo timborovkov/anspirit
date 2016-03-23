@@ -20,6 +20,7 @@ var geolib = require('geolib');
             document.getElementById("myExtensions_menu").innerHTML = international.getGUIText("My Extensions");
             document.getElementById("market_menu").innerHTML = international.getGUIText("Market");
             document.getElementById("home_menu").innerHTML = international.getGUIText("Home");
+            document.getElementById("iot_menu").innerHTML = international.getGUIText("Home Control");
             document.getElementById("settings_menu").innerHTML = international.getGUIText("Settings");
             document.getElementById("emoji_menu").innerHTML = international.getGUIText("Emoji");
             document.getElementById("timetable_menu").innerHTML = international.getGUIText("Schedule");

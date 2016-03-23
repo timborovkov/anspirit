@@ -13,7 +13,6 @@
   }
   module.exports.setStateForDevice = function(state, deviceId){
     /*
-      TODO hub
       1. Get POST {userId, secret, state, device}
       2. Verify user
       3. Check if this is users hub
