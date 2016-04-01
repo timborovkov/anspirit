@@ -85,7 +85,9 @@ var geolib = require('geolib');
             $(".content").load("./timetable.html");
             break;
           case "iot_menu":
-            $(".content").load("./iot.html");
+            $(".content").load("./iot.html", function() {
+              loaded();
+            });
             break;
           }
       });

@@ -1,21 +1,45 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="utf-8">
-    <title>Q | Home Automation</title>
-    <style media="screen" src="../css/iotUI.js"></style>
-    <script type="text/javascript" src="../js/iotUI.js"></script>
-  </head>
-  <body class="iotUI">
+<script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyB0QuWQR2WCA727bF5Kzj2TKa43ZOuhFgk&callback=initMap" async defer></script>
+<style media="screen">
+  div.iotUI{
+    overflow: scroll;
+  }
+  .inform_lbl{
+  	position: absolute;
+  	bottom: 38px;
+  	width: 100%;
+  	border-color: black;
+  	border-width: 1px;
+  	color: red;
+  	height: 50px;
+  }
+  .hubOnMap{
+    width: 100%;
+    height: 200px;
+  }
+  button.hubBtn{
+    border-width: 0px;
+    border-radius: 20px;
+    background-color: rgb(83, 255, 100);
+    cursor: pointer;
+    padding-bottom: 2px;
+  }
+</style>
+<!-- Google Maps API -->
+<script type="text/javascript" src="../js/iotUI.js"></script>
+  <div class="iotUI">
     <h1>Home Control</h1>
     <!-- Choose your hub -->
     <table align="center" class="homeHubs">
+      <tbody>
 
+      </tbody>
     </table>
-    <div class="hubOnMap"></div>
+    <div id="googleMap" style="width:100%;height:300px; background-color: black;"></div>
     <table align="center" class="hubDevices">
 
     </table>
     <label class="inform_lbl"></label>
-  </body>
+  </div>
 </html>

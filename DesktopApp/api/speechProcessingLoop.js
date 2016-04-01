@@ -4,9 +4,9 @@
   /*
   *     prepare
   */
-  var qapi = require('../api/qapi.js');
+  var qapi = require('../api/qapi');
   global.qapi = qapi;
-  var international = require('../api/international.js'),
+  var international = require('../api/international'),
   a = 1,
   wakeUpListener = new webkitSpeechRecognition(),
   mainListener = new webkitSpeechRecognition(),
