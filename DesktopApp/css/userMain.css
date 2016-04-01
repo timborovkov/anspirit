@@ -99,7 +99,7 @@ html, body {
   z-index: 100;
 }
 .cards{
-  overflow: scroll;
+  overflow-y: scroll;
   width: 100%;
   height: 100%;
   margin: 0px;
@@ -128,4 +128,7 @@ html, body {
 .logout_btn:hover{
   margin: 1px;
   cursor: pointer;
+}
+::-webkit-scrollbar {
+    display: none;
 }

@@ -122,12 +122,73 @@
       }
   }
   function doSpeechProcessing(speech, callBack){
+
+//TeamUp demo pice <--
+    if(speech.contains('light')){
+      var demoHubIp = "http://80.223.209.170";
+      console.log("TMUP light");
+        if(speech.contains('on')){
+          $.ajax({
+            type: 'get',
+            url: demoHubIp + ":8080/tmupDemo",
+            data: {action: 'on'},
+            success: function(data){
+              //Done
+              console.log("Done: send ON to hub (TeamUp demo)");
+              qSay("OK", function(){
+                callBack();
+              });
+            },
+            error: function(a, error) {
+              console.error("Fail: send ON to hub (TeamUp demo) " + error);
+              qSay("Sorry, I got an error while doing that", function(){
+                callBack();
+              });
+            }
+          });
+        }else if(speech.contains('off')){
+          $.ajax({
+            type: 'get',
+            url: demoHubIp + ":8080/tmupDemo",
+            data: {action: 'off'},
+            success: function(data){
+              //Done
+              $.ajax({
+                type: 'get',
+                url: demoHubIp + ":8080/tmupDemo",
+                data: {action: 'off'},
+                success: function(data){
+                  //Done
+                  console.log("Done: send OFF to hub (TeamUp demo)");
+                  qSay("OK", function(){
+                    callBack();
+                  });
+                },
+                error: function(a, error) {
+                  console.error("Fail: send OFF to hub (TeamUp demo) " + error);
+                  qSay("Sorry, I got an error while doing that", function(){
+                    callBack();
+                  });
+                }
+              });
+            },
+            error: function(a, error) {
+              console.error("Fail: send ON to hub (TeamUp demo) " + error);
+              qSay("Sorry, I got an error while doing that", function(){
+                callBack();
+              });
+            }
+          });
+        }
+      }else{
+//TeamUp demo pice -->
+
       // Go through extensions to get action for speech request
       $.getJSON("../rules.json", function(extensions) {
           if(extensions.length === 0){
             //No extensions found
             //Get action, speech response and options from Api.ai
-            qapi.apiAi(speech, function(response){
+        qapi.apiAi(speech, function(response){
               if(response.status.code != "200"){
                 qSay(international.getGUIText("Sorry I didn't get that"), function(){
                   callBack();
@@ -150,7 +211,7 @@
                   });
                 }
               }
-            });
+        });
           }else{
 
             /*
@@ -179,6 +240,7 @@
           }
 
   		});
+    }
   }
 
   /*
