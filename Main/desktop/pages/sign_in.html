@@ -1,0 +1,99 @@
+<style media="screen">
+  #background {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      min-width: 100%;
+      min-height: 100%;
+      width: auto;
+      height: auto;
+      z-index: -100;
+      -webkit-transform: translateX(-50%) translateY(-50%);
+      transform: translateX(-50%) translateY(-50%);
+      background-size: cover;
+  }
+  input{
+    margin-top: 15px !important;
+    color: white !important;
+  }
+</style>
+
+<video autoplay loop muted id="background">
+  <source src="video/bg.webm" type="video/webm">
+  <source src="video/bg.mp4" type="video/mp4">
+  <source src="video/bg.ogg" type="video/ogg">
+</video>
+
+<table>
+  <tr>
+    <td>
+      <input placeholder="Email" id="email" type="text" class="validate">
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <input placeholder="Password" id="password" type="password" class="validate">
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <button class="btn waves-effect waves-light sign_in" type="submit" name="action" style="width:100%;">
+        Sign In
+      </button>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <button class="btn waves-effect waves-light sign_up" type="submit" name="action" style="width:100%;">
+        New User
+      </button>
+    </td>
+  </tr>
+  <tr>
+    <td style="text-align: center;">
+      <img src="images/logo.png" alt="" style="width: 50%; max-width: 200px;"/>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  $(document).ready(function() {
+    $('.sign_in').click(function(){
+      // Get variables
+      var email = $("#email").val();
+      var password = $("#password").val();
+      // Check for valid data
+      if(validateEmail(email)){
+        //Email is good
+        if(password.length > 6){
+          //Password is good
+          // Login user in firebase
+          firebaseLogin(email, password, 'normal', function(done){
+            if(done){
+              var user = firebase.auth().currentUser;
+              // In
+              setTimeout(function(){
+                // Say hello
+                swal("Welcome", "Hello, " + getCookie('firstname'), "success");
+                //go to home page
+                $(".content").load("pages/home.html");
+              }, 500);
+            }else{
+              // Error
+              swal("Sorry", "Wrong login data", "error");
+            }
+          });
+        }else{
+          // Not valid password
+          swal("Sorry", "Password is not valid", "error");
+        }
+      }else{
+        // Not valid email
+        swal("Sorry", "Email is not valid", "error");
+      }
+    });
+    $('.sign_up').click(function(){
+      $(".content").load("pages/sign_up.html");
+    });
+  });
+</script>

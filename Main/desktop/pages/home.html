@@ -1,0 +1,74 @@
+<!-- Amy -->
+<script src="js/amy.js" charset="utf-8"></script>
+
+<!-- Speech -->
+<script src="js/speech.js" charset="utf-8"></script>
+
+<!-- Menu -->
+<script type="text/javascript">
+  $(document).ready(function(){
+    //Init menu
+    $(".button-collapse").sideNav();
+    //Load first page
+    $(".home_content").load('pages/home/home.html');
+    //Menu controls
+      $(".home_btn").click(function(){
+        //Home button
+        $(".home_content").load('pages/home/home.html');
+      });
+      $(".store_btn").click(function(){
+        //Profile settings button
+        $(".home_content").load('pages/home/store.html');
+      });
+      $(".options_btn").click(function(){
+        //Profile settings button
+        $(".home_content").load('pages/home/options.html');
+      });
+      $(".profile_btn").click(function(){
+        //Profile settings button
+        $(".home_content").load('pages/home/profile.html');
+      });
+  });
+</script>
+
+<div class="menu" >
+  <nav>
+    <div class="nav-wrapper">
+      <a href="#!" class="brand-logo"><h4 style="font-family: 'Kaushan Script', 'Helvetica Neue', Helvetica, Arial, cursive;">Anspirit</h4></a>
+      <a href="#" data-activates="mobile-demo" class="button-collapse"><i class="material-icons">menu</i></a>
+      <ul class="right hide-on-med-and-down">
+        <li><a class="home_btn">Home</a></li>
+        <li><a class="store_btn">Store</a></li>
+        <li><a class="options_btn">Options</a></li>
+        <li><a class="profile_btn">Profile</a></li>
+      </ul>
+      <ul class="side-nav" id="mobile-demo">
+        <li><a class="home_btn">Home</a></li>
+        <li><a class="store_btn">Store</a></li>
+        <li><a class="options_btn">Options</a></li>
+        <li><a class="profile_btn">Profile</a></li>
+      </ul>
+    </div>
+  </nav>
+</div>
+<div class="home_content" style="width: 100%; height: 75%; position: absoulute; top: 40px;">
+
+</div>
+<div class="speechModule" style="width: 100%; height: 12%; position: fixed; bottom: 0px; background-color: rgba(255, 0, 0, 0.5); z-index: 200;">
+  <table align="center" style="width: 100%; margin-top: -12px;">
+    <tr>
+      <td style="width: 400px;">
+        <!-- Text field / speech input-->
+        <input type="text" class="form-control speechInput" placeholder="Can't talk? Write!">
+      </td>
+      <td style="text-align: center">
+        <!-- Speech btn -->
+        <img src="http://www.haapie.com/images/icons/audio_processing_icon.png" alt="Speak..." width="60px" class="speechBtn"/>
+      </td>
+      <td style="width: 400px;">
+        <!-- Speech recieved -->
+        <h6 class="speechLabel">Say hello Amy!</h6>
+      </td>
+    </tr>
+  </table>
+</div>

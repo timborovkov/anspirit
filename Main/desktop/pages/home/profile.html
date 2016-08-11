@@ -1,0 +1,123 @@
+<script type="text/javascript">
+  $(document).ready(function(){
+    $('.image_url_choose_row').css('background-image', 'url('+getCookie('photo')+')');
+    $('#photo').val(getCookie('photo'));
+
+    $('#email').val(getCookie('email'));
+
+    $('#email').val(getCookie('address'));
+
+    $('#address').val(getCookie('address'));
+
+
+    //On change
+    $('#photo').change(function(){
+      var newphoto = $('#photo').val();
+      $('.image_url_choose_row').css('background-image', 'url('+newphoto+')');
+    });
+    $('#address').change(function(){
+
+    });
+    $('#about').change(function(){
+
+    });
+    $('#facebook').change(function(){
+
+    });
+    $('#twitter').change(function(){
+
+    });
+    $('#instagram').change(function(){
+
+    });
+    $('#linkedin').change(function(){
+
+    });
+
+    //On save
+    $('.saveBtn').click(function(){
+
+      //Change in database
+        var photo = $('#photo').val();
+        firebaseUpdateUserData('photo', photo);
+        var address = $('#address').val();
+        firebaseUpdateUserData('address', address);
+        var about = $('#about').val();
+        firebaseUpdateUserData('about', about);
+        var facebook = $('#facebook').val();
+        firebaseUpdateUserData('twitter', facebook);
+        var twitter = $('#twitter').val();
+        firebaseUpdateUserData('twitter', twitter);
+        var instagram = $('#instagram').val();
+        firebaseUpdateUserData('instagram', instagram);
+        var linkedin = $('#linkedin').val();
+        firebaseUpdateUserData('linkedin', linkedin);
+
+      //Change in cookies
+        setCookie('photo', photo);
+        setCookie('address', address);
+        setCookie('about', about);
+        setCookie('facebook', facebook);
+        setCookie('twitter', twitter);
+        setCookie('instagram', instagram);
+        setCookie('linkedin', linkedin);
+
+      //Done
+      swal('Saved', 'Your data has been updated!', 'success')
+    });
+  });
+</script>
+
+<table style="margin-left: auto; margin-right: auto; margin-top: 60px; max-width: 500px;">
+  <tr>
+    <td>
+      <p style="font-size: 15px; color: red">Remember to save after editing!</p>
+      <a class="waves-effect waves-light btn saveBtn">Save</a>
+      <a class="waves-effect waves-light btn" onclick="firebaseLogout()"><i class="fa fa-sign-out" aria-hidden="true"></i>Sign Out</a>
+    </td>
+  </tr>
+  <tr class="image_url_choose_row" style="color: white; background-repeat: no-repeat; background-size: cover; background-position: center; height: 400px;">
+    <td>
+      <p style="font-size: 18px;">Your photo URL</p>
+      <input placeholder="http://exaple.com/photo.jpg" type="text" id="photo" class="validate">
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <p style="font-size: 18px;"><i class="fa fa-home fa-2x" aria-hidden="true"></i> Your home address</p>
+      <input placeholder="Street + house (apartment), city, state and ZIP" type="text" id="address" class="validate">
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <div class="input-field col s12">
+        <textarea id="about" class="materialize-textarea" length="120"></textarea>
+        <label for="about_me">Tell about your self :D</label>
+      </div>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <p style="font-size: 18px;"><i class="fa fa-facebook fa-2x" aria-hidden="true"></i> Your Facebook URL</p>
+      <input placeholder="https://facebook.com/user" type="text" id="facebook" class="validate">
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <p style="font-size: 18px;"><i class="fa fa-twitter fa-2x" aria-hidden="true"></i> Your Twitter URL</p>
+      <input placeholder="https://twitter.com/user" type="text" id="twitter" class="validate">
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <p style="font-size: 18px;"><i class="fa fa-instagram fa-2x" aria-hidden="true"></i> Your Instagram URL</p>
+      <input placeholder="https://instagram.com/user" type="text" id="instagram" class="validate">
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <p style="font-size: 18px;"><i class="fa fa-linkedin fa-2x" aria-hidden="true"></i> Your Linkedin URL</p>
+      <input placeholder="https://www.linkedin.com/in/user" type="text" id="linkedin" class="validate">
+    </td>
+  </tr>
+</table>

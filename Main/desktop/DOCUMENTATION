@@ -1,0 +1,15 @@
+/*
+* Server response for language processing
+*/
+{speechanwser, codeToRun}
+
+/*
+* Request speech processing
+*/
+"api.anspirit.org/speech"
+{lang, speech, uid, uname, client}
+//lang = en||fi||se||ru||fr||ge
+//speech = user's speech input
+//uid = user's unique id
+//uname = user's firstname
+//client = desktop||mobile||hub||else

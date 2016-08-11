@@ -1,0 +1,186 @@
+<style media="screen">
+  #background {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      min-width: 100%;
+      min-height: 100%;
+      width: auto;
+      height: auto;
+      z-index: -100;
+      -webkit-transform: translateX(-50%) translateY(-50%);
+      transform: translateX(-50%) translateY(-50%);
+      background-size: cover;
+  }
+  input{
+    margin-top: 15px !important;
+    color: white !important;
+  }
+  i{
+    color: white;
+  }
+  textarea{
+    color: white;
+  }
+</style>
+
+<video autoplay loop muted id="background">
+  <source src="video/bg.webm" type="video/webm">
+  <source src="video/bg.mp4" type="video/mp4">
+  <source src="video/bg.ogg" type="video/ogg">
+</video>
+
+<table>
+  <tr>
+    <td>
+      <input placeholder="First Name" id="first_n" type="text" class="validate">
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <input placeholder="Last Name" id="last_n" type="text" class="validate">
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <input placeholder="Email" id="email" type="text" class="validate">
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <input placeholder="Password" id="password" type="password" class="validate">
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <div class="input-field col s12">
+        <textarea id="about_me" class="materialize-textarea" length="120"></textarea>
+        <label for="about_me">Tell about your self :D</label>
+      </div>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <input placeholder="Your address: Street + house (apartment), city, state and ZIP" type="text" id="address" class="validate">
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <input placeholder="Birthday" type="date" id="birthday" class="validate">
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <input placeholder="Your photo URL" type="text" id="photo_url" class="validate">
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <i class="fa fa-facebook fa-3x" aria-hidden="true"></i><input placeholder="Your Facebook URL" type="text" id="facebook" class="validate">
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <i class="fa fa-twitter fa-3x" aria-hidden="true"></i><input placeholder="Your Twitter URL" type="text" id="twitter" class="validate">
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <i class="fa fa-instagram fa-3x" aria-hidden="true"></i><input placeholder="Your Instagram URL" type="text" id="instagram" class="validate">
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <i class="fa fa-linkedin fa-3x" aria-hidden="true"></i><input placeholder="Your Linkedin URL" type="text" id="linkedin" class="validate">
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <button class="btn waves-effect waves-light sign_up" type="submit" name="action" style="width:100%;">
+        Continue
+      </button>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <button class="btn waves-effect waves-light sign_in" type="submit" name="action" style="width:100%; margin-bottom: 20px;">
+        Already have an account?
+      </button>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  $(document).ready(function() {
+    $('.sign_in').click(function(){
+      $(".content").load("pages/sign_in.html");
+    });
+    $('.sign_up').click(function(){
+      // Get variables
+      var user = {};
+      user["email"] = $("#email").val(),
+      user["password"] = $("#password").val(),
+      user["firstname"] = $("#first_n").val(),
+      user["lastname"] = $("#last_n").val(),
+      user["about"] = $("#about_me").val(),
+      user["address"] = $("#address").val(),
+      user["birthday"] = $("#birthday").val(),
+      user["photo"] = $("#photo_url").val(),
+      user["facebook"] = $("#facebook").val(),
+      user["twitter"] = $("#twitter").val(),
+      user["instagram"] = $("#instagram").val(),
+      user["linkedin"] = $("#linkedin").val();
+
+      var good = 0;
+
+      // Check for valid data
+      if(validateEmail(user.email)){
+        //Email is good
+        good++
+        //Check other variables
+        if(user.password !== null && user.password !== "" && user.password.length > 6){
+        //Password is good
+        good++
+          if(user.firstname !== null && user.firstname !== "" && user.firstname.length > 2 && user.lastname !== null && user.lastname !== "" && user.lastname.length > 2){
+          //Name is good
+          good++
+            if(user.address !== null && user.address !== "" && user.address.length > 5){
+            //Address is good
+            good++
+              if(user.birthday !== null && user.birthday !== ""){
+              //Birthday is good
+              good++
+                if(user.photo !== null && user.photo !== "" && (user.photo.indexOf(".jpg") > -1 || user.photo.indexOf(".png") > -1 || user.photo.indexOf(".jpeg") > -1) && user.photo.indexOf("http") > -1){
+                  //photo is good
+                  good++
+                }
+              }
+            }
+          }
+        }
+        if(good === 6){
+          //Everything is good
+          // Register user in firebase
+          firebaseRegister(user.email, user.password, function(uid){
+            //Add uid to user object
+            user["uid"] = uid;
+            // Save user's data into database
+            firebaseAddUser(user, function(){
+              //Say welcome
+              swal("Welcome", "Hello, " + user.firstname, "success");
+              //Go to welcome screen
+              $(".content").load("pages/welcome.html");
+            });
+          });
+        }else{
+          //Something is wrong
+          swal("Sorry", "Some data you entered is not valid!", "error");
+        }
+
+      }else{
+        // Not valid email
+        swal("Sorry", "Email is not valid", "error");
+      }
+    });
+  });
+</script>

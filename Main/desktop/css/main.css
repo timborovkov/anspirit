@@ -1,0 +1,12 @@
+html, body {
+  font-family: 'Roboto', 'Helvetica', sans-serif;
+}
+nav a{
+  font-family: sans-serif;
+}
+nav{
+  background-color: #fed136 !important;
+}
+.speechBtn{
+  cursor: pointer;
+}

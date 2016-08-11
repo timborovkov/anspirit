@@ -1,0 +1,45 @@
+<style media="screen">
+  .cards{
+    margin-top: 6px;
+    width: 100%;
+    height: 496px;
+    overflow-y: scroll;
+  }
+  .card-main{
+    width: 380px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+</style>
+<script type="text/javascript">
+  $(document).ready(function(){
+    $(".cards").html(app.cards);
+  });
+  function newCard(imageUrl, title, content, btnText, btnClick){
+    var newCard = "";
+
+    newCard += '<div class="row">';
+    newCard +=  '<div class="col s12 m7" style="width: 100%">';
+    newCard +=    '<div class="card card-main">';
+    newCard +=      '<div class="card-image">';
+    newCard +=        '<img src="'+imageUrl+'">';
+    newCard +=        '<span class="card-title" style="color: rgba(0, 0, 0, 0.8); font-weight: bold;">'+title+'</span>';
+    newCard +=      '</div>';
+    newCard +=      '<div class="card-content">';
+    newCard +=        '<p>'+content+'</p>';
+    newCard +=      '</div>';
+    newCard +=      '<div class="card-action">';
+    newCard +=        '<a onclick="'+btnClick+'">'+btnText+'</a>';
+    newCard +=      '</div>';
+    newCard +=    '</div>';
+    newCard +=  '</div>';
+    newCard += '</div>';
+
+    app.cards = newCard + $(".cards").html();
+    $(".cards").html(newCard + $(".cards").html());
+  }
+</script>
+
+<div class="cards">
+
+</div>

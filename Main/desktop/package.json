@@ -1,0 +1,14 @@
+{
+  "name": "desktop",
+  "version": "1.0.0",
+  "description": "Q Desktop app",
+  "main": "app.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "author": "Tim Borovkov",
+  "license": "ISC",
+  "dependencies": {
+    "jquery": "^3.0.0"
+  }
+}
